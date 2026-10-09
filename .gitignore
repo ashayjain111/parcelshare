@@ -1,0 +1,14 @@
+# Local dev database and logs
+backend/data/
+*.log
+
+# Build output
+backend/target/
+frontend/dist/
+frontend/node_modules/
+
+# Env files (never commit secrets)
+.env
+.env.*
+!.env.example
+.neon

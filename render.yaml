@@ -1,0 +1,23 @@
+# Render Blueprint: free web service for the Spring Boot backend.
+# Secrets are marked sync:false, so you type them into the Render dashboard (they are never stored in git).
+services:
+  - type: web
+    name: parcelshare-api
+    runtime: docker
+    plan: free
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /public/config
+    envVars:
+      - key: DB_URL
+        sync: false        # jdbc:postgresql://HOST/DB?sslmode=require  (from your Neon connection string)
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_PASSWORD
+        sync: false        # choose a strong password for the admin account
+      - key: CORS_ORIGINS
+        sync: false        # your frontend URL, e.g. https://parcelshare.vercel.app

@@ -1,0 +1,260 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/space-grotesk";
+@import "tailwindcss";
+
+/*
+  ParcelShare design system: deep-space dark, glass surfaces, electric indigo-to-cyan accents.
+  The existing pages were written against Tailwind's light "slate/emerald/amber/indigo/red" scales, so the scales
+  are remapped here once: slate becomes a light-on-dark text/border ramp, and the pastel -50/-100/-200 tints become
+  translucent glows. Every page and component inherits the new look without per-page changes.
+*/
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-slate-50: rgb(255 255 255 / 0.05);
+  --color-slate-100: rgb(255 255 255 / 0.07);
+  --color-slate-200: rgb(255 255 255 / 0.10);
+  --color-slate-300: rgb(255 255 255 / 0.16);
+  --color-slate-400: #6f789b;
+  --color-slate-500: #8b94b8;
+  --color-slate-600: #a9b1d1;
+  --color-slate-700: #c5cbe4;
+  --color-slate-800: #e0e4f5;
+  --color-slate-900: #f4f6ff;
+  --color-slate-950: #05060f;
+
+  --color-emerald-50: rgb(16 185 129 / 0.10);
+  --color-emerald-100: rgb(16 185 129 / 0.16);
+  --color-emerald-200: rgb(16 185 129 / 0.32);
+  --color-emerald-600: #34d399;
+  --color-emerald-700: #6ee7b7;
+  --color-emerald-800: #6ee7b7;
+  --color-emerald-900: #a7f3d0;
+
+  --color-amber-50: rgb(245 158 11 / 0.10);
+  --color-amber-100: rgb(245 158 11 / 0.16);
+  --color-amber-200: rgb(245 158 11 / 0.32);
+  --color-amber-300: rgb(245 158 11 / 0.45);
+  --color-amber-700: #fbbf24;
+  --color-amber-800: #fcd34d;
+  --color-amber-900: #fde68a;
+
+  --color-indigo-50: rgb(99 102 241 / 0.12);
+  --color-indigo-100: rgb(99 102 241 / 0.20);
+  --color-indigo-200: rgb(129 140 248 / 0.35);
+  --color-indigo-300: rgb(129 140 248 / 0.55);
+  --color-indigo-500: #6366f1;
+  --color-indigo-600: #9aa0ff;
+  --color-indigo-700: #a5b4fc;
+  --color-indigo-800: #c7d2fe;
+  --color-indigo-900: #e0e7ff;
+
+  --color-red-50: rgb(239 68 68 / 0.10);
+  --color-red-100: rgb(239 68 68 / 0.16);
+  --color-red-200: rgb(239 68 68 / 0.32);
+  --color-red-300: rgb(239 68 68 / 0.40);
+  --color-red-600: #f87171;
+  --color-red-700: #fca5a5;
+  --color-red-800: #fecaca;
+
+  --color-sky-100: rgb(14 165 233 / 0.16);
+  --color-sky-800: #7dd3fc;
+  --color-orange-100: rgb(249 115 22 / 0.16);
+  --color-orange-800: #fdba74;
+
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-float: float 7s ease-in-out infinite;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+  to { background-position: 200% center; }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+:root {
+  --bg: #05060f;
+  --mx: 50vw;
+  --my: 30vh;
+  color-scheme: dark;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  @apply font-sans text-slate-800 antialiased;
+  background:
+    radial-gradient(1100px 600px at 12% -10%, rgb(79 70 229 / 0.22), transparent 60%),
+    radial-gradient(900px 540px at 95% 5%, rgb(6 182 212 / 0.13), transparent 60%),
+    radial-gradient(800px 600px at 50% 110%, rgb(147 51 234 / 0.14), transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* soft spotlight that follows the pointer */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(520px circle at var(--mx) var(--my), rgb(129 140 248 / 0.09), transparent 65%);
+}
+
+/* film grain: the thing that makes dark gradients look expensive instead of flat */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: rgb(129 140 248 / 0.45);
+  color: #fff;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgb(255 255 255 / 0.12); border-radius: 999px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: rgb(255 255 255 / 0.22); }
+
+input,
+select,
+textarea {
+  @apply w-full rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm text-slate-900 outline-none transition;
+  backdrop-filter: blur(8px);
+}
+
+input::placeholder,
+textarea::placeholder {
+  @apply text-slate-400;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: rgb(129 140 248 / 0.7);
+  box-shadow: 0 0 0 4px rgb(99 102 241 / 0.18), 0 0 24px -6px rgb(99 102 241 / 0.5);
+}
+
+input:disabled {
+  @apply opacity-40;
+}
+
+select option,
+select optgroup {
+  background: #0b0d1f;
+  color: #e0e4f5;
+}
+
+input[type="checkbox"] {
+  @apply h-4 w-4 cursor-pointer rounded accent-indigo-500;
+}
+
+input[type="file"] {
+  @apply cursor-pointer text-slate-600;
+}
+
+input[type="file"]::file-selector-button {
+  @apply mr-3 cursor-pointer rounded-lg border-0 bg-white/10 px-3 py-1.5 text-xs font-medium text-slate-800 transition hover:bg-white/20;
+}
+
+/* ---- reusable surfaces and effects ---- */
+
+.glass {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.025));
+  border: 1px solid rgb(255 255 255 / 0.10);
+  box-shadow: 0 1px 0 0 rgb(255 255 255 / 0.08) inset, 0 20px 50px -24px rgb(0 0 0 / 0.8);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, #fff 10%, #c7d2fe 40%, #67e8f9 75%, #fff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 7s linear infinite;
+  text-shadow: none;
+  filter: drop-shadow(0 4px 28px rgb(5 6 15 / 0.85));
+}
+
+.glow-border {
+  position: relative;
+}
+
+.glow-border::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgb(129 140 248 / 0.6), transparent 40%, rgb(34 211 238 / 0.5));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--d, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.page-enter {
+  animation: var(--animate-fade-up);
+}
+
+html[data-motion="calm"] *,
+html[data-motion="calm"] *::before,
+html[data-motion="calm"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* a loading spinner that does not spin looks broken: it is feedback, not decoration */
+html[data-motion="calm"] .animate-spin {
+  animation-duration: 1s !important;
+  animation-iteration-count: infinite !important;
+}
+
+html[data-motion="calm"] .reveal {
+  opacity: 1;
+  transform: none;
+}
