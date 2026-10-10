@@ -22,5 +22,10 @@ public record AppProps(
         @DefaultValue("") String mailFrom,
         @DefaultValue("http://localhost:5180") String frontendUrl,
         @DefaultValue("false") boolean allowDevDefaults,
-        @DefaultValue("180") int evidenceRetentionDays) {
+        @DefaultValue("180") int evidenceRetentionDays,
+        @DefaultValue("") String digilockerClientId,
+        @DefaultValue("") String digilockerClientSecret,
+        @DefaultValue("https://api.digitallocker.gov.in/public/oauth2/1/authorize") String digilockerAuthorizeUrl,
+        @DefaultValue("https://api.digitallocker.gov.in/public/oauth2/1/token") String digilockerTokenUrl,
+        @DefaultValue("https://api.digitallocker.gov.in/public/oauth2/1/user") String digilockerUserUrl) {
 }

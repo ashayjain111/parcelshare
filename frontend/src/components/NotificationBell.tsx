@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api, timeAgo } from '../lib'
@@ -51,8 +52,16 @@ export default function NotificationBell() {
           </span>
         )}
       </button>
+      <AnimatePresence>
       {open && (
-        <div className="glass absolute right-0 top-12 z-50 w-[min(92vw,22rem)] overflow-hidden rounded-2xl bg-[#0b0d1f]/95 p-1.5">
+        <motion.div
+          initial={{ opacity: 0, y: -8, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -8, scale: 0.97 }}
+          transition={{ type: 'spring', stiffness: 460, damping: 34 }}
+          style={{ transformOrigin: 'top right' }}
+          className="glass absolute right-0 top-12 z-50 w-[min(92vw,22rem)] overflow-hidden rounded-2xl bg-[#0b0d1f]/95 p-1.5"
+        >
           <p className="px-3 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-slate-500">Notifications</p>
           {!inbox.data?.items.length ? (
             <p className="px-3 py-8 text-center text-sm text-slate-500">Nothing yet. Booking updates will show up here.</p>
@@ -80,8 +89,9 @@ export default function NotificationBell() {
               ))}
             </ul>
           )}
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </div>
   )
 }

@@ -140,6 +140,8 @@ export interface User {
   ratingCount: number
   completedDeliveries: number
   reliabilityPercent: number
+  identityVerified: boolean
+  identityProvider: string | null
 }
 
 export interface UserSummary {

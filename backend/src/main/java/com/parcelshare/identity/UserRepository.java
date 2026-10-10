@@ -14,5 +14,7 @@ public interface UserRepository extends JpaRepository<AppUser, Long> {
 
     boolean existsByEmailIgnoreCase(String email);
 
+    boolean existsByIdentityRefAndIdNot(String identityRef, Long id);
+
     List<AppUser> findByTravellerVerification(AppUser.Verification v);
 }

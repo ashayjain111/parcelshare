@@ -81,6 +81,8 @@ mode is off, and it must never be enabled in production.
 - **Premium UI**: dark glass design system, scroll-driven 3D landing page (Three.js: a parcel flying through a city network, a QR
   handover gate, a hash chain and an arrival burst), 3D parcel on the login pages, tilt cards, glowing booking progress track,
   responsive down to phones. All 3D is generated in code (no model or texture downloads) and loads only on the screens that use it
+- **Identity verification** with DigiLocker (activates when API Setu credentials are added; a clearly labelled demo version works now). Stores only a verified name and reference id, never an Aadhaar number. See DEPLOY.md
+- **Smooth navigation**: every screen is its own lazily loaded chunk, warmed in the background when the browser is idle; page, toast and menu transitions use Motion
 - **Motion preference**: "Calm" (default when the OS asks for reduced motion: the story still follows your scroll, ambient spinning is turned
   right down) or "Full". A toggle at the bottom-left of every page switches it and remembers the choice
 

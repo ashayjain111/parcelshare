@@ -29,6 +29,11 @@ export default function Profile() {
 
   const reviews = useQuery({ queryKey: ['reviews'], queryFn: () => api<Review[]>('/me/reviews') })
   const request = useMutation({ mutationFn: () => api('/me/verification', { body: { note } }), onSuccess: () => refresh() })
+  const idp = useQuery({ queryKey: ['identity-options'], queryFn: () => api<{ available: boolean; provider: string }>('/identity/options'), staleTime: Infinity })
+  const startId = useMutation({
+    mutationFn: () => api<{ url: string }>('/identity/start', { method: 'POST' }),
+    onSuccess: (r) => { window.location.href = r.url }, // leaves the app for the provider's consent screen
+  })
   const save = useMutation({
     mutationFn: () => api('/me', { method: 'PATCH', body: { fullName: name, phone } }),
     onSuccess: async () => {
@@ -115,9 +120,26 @@ export default function Profile() {
         <p className="mt-1 text-sm text-slate-500">
           Status: <b className="text-slate-800">{user.travellerVerification}</b>. Only verified travellers can post trips.
         </p>
+        {user.identityVerified && (
+          <p className="mt-3 flex items-center gap-2 text-sm text-emerald-700">
+            <span className="grid h-5 w-5 place-items-center rounded-full bg-emerald-400/20 text-xs">✓</span>
+            Identity verified with {user.identityProvider === 'DEMO' ? 'the demo provider' : 'DigiLocker'}.
+          </p>
+        )}
+        {user.travellerVerification !== 'APPROVED' && idp.data?.available && (
+          <div className="mt-4 rounded-xl border border-indigo-200 bg-indigo-50 p-4">
+            <p className="text-sm font-medium text-slate-900">Verify instantly with DigiLocker{idp.data.provider === 'DEMO' ? ' (demo)' : ''}</p>
+            <p className="mt-1 text-xs text-slate-500">
+              Sign in with your Aadhaar-linked DigiLocker and share your verified name. A driving licence stored in DigiLocker works too.
+              We never see or store your Aadhaar number or any document, only your verified name.
+            </p>
+            <ErrorBox error={startId.error} />
+            <Button className="mt-3" disabled={startId.isPending} onClick={() => startId.mutate()}>Verify with DigiLocker</Button>
+          </div>
+        )}
         {(user.travellerVerification === 'NONE' || user.travellerVerification === 'REJECTED') && (
           <div className="mt-4 space-y-4">
-            <Field label="Tell us how to verify you" hint="E.g. your college or employer and ID type. An admin will contact you to check your ID. Do not paste ID numbers here.">
+            <Field label="Or ask an admin to verify you manually" hint="E.g. your college or employer and ID type. An admin will contact you to check your ID. Do not paste ID numbers here.">
               <textarea rows={3} value={note} onChange={(e) => setNote(e.target.value)} />
             </Field>
             <ErrorBox error={request.error} />

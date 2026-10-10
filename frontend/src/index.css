@@ -94,6 +94,14 @@
 
 html {
   background: var(--bg);
+  scrollbar-gutter: stable;
+}
+
+/* backdrop blur is the most expensive effect on phones: keep the look, use a cheaper radius */
+@media (max-width: 768px), (pointer: coarse) {
+  .glass {
+    backdrop-filter: blur(10px) saturate(130%);
+  }
 }
 
 body {
@@ -160,7 +168,6 @@ input,
 select,
 textarea {
   @apply w-full rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm text-slate-900 outline-none transition;
-  backdrop-filter: blur(8px);
 }
 
 input::placeholder,

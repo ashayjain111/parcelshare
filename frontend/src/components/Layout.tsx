@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
+import { MotionConfig, motion as m } from 'motion/react'
+import { Suspense, useEffect, useState } from 'react'
 import { Link, NavLink, Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth'
 import { fetchConfig } from '../lib'
@@ -48,6 +49,7 @@ export default function Layout() {
   ]
 
   return (
+    <MotionConfig reducedMotion={motion === 'calm' ? 'always' : 'never'}>
     <div className="relative z-[1] min-h-screen">
       {!landing && (
         <a href="#main" className="sr-only z-[80] rounded-lg bg-white px-4 py-2 text-sm font-semibold text-[#05060f] focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
@@ -132,11 +134,23 @@ export default function Layout() {
       </header>
 
       {landing ? (
-        <Outlet />
-      ) : (
-        <main id="main" tabIndex={-1} key={loc.pathname} className="page-enter mx-auto max-w-6xl px-4 pb-16 pt-10">
+        <Suspense fallback={<Loading />}>
           <Outlet />
-        </main>
+        </Suspense>
+      ) : (
+        <m.main
+          id="main"
+          tabIndex={-1}
+          key={loc.pathname}
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: [0.2, 0.7, 0.2, 1] }}
+          className="mx-auto max-w-6xl px-4 pb-16 pt-10"
+        >
+          <Suspense fallback={<Loading />}>
+            <Outlet />
+          </Suspense>
+        </m.main>
       )}
 
       <button
@@ -156,6 +170,7 @@ export default function Layout() {
         <p className="mt-2">ParcelShare connects people. It does not carry, inspect or insure parcels.</p>
       </footer>
     </div>
+    </MotionConfig>
   )
 }
 

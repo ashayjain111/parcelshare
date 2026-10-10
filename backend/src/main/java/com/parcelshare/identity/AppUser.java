@@ -66,6 +66,12 @@ public class AppUser {
 
     private Instant deletedAt;
 
+    /** Set after a DigiLocker (or demo) verification. Only a name and a pseudonymous reference id: never an Aadhaar number. */
+    private String identityProvider;
+    private String identityName;
+    private String identityRef;
+    private Instant identityVerifiedAt;
+
     private int ratingSum;
     private int ratingCount;
     private int completedDeliveries;

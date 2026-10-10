@@ -16,7 +16,7 @@ class ProductionGuardTest {
 
     private static AppProps props(String jwt, String adminPassword, boolean allowDev) {
         return new AppProps(jwt, 12, 10, 10, 48, 24, 30, false, List.of("http://localhost:5180"), "admin@x.test",
-                adminPassword, false, false, "", "http://localhost:5180", allowDev, 180);
+                adminPassword, false, false, "", "http://localhost:5180", allowDev, 180, "", "", "https://x.test/authorize", "https://x.test/token", "https://x.test/user");
     }
 
     private static ProductionGuard guard(String dbUrl, AppProps p) {
