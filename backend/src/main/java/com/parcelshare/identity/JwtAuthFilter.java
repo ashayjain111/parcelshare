@@ -28,7 +28,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String header = req.getHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
             jwt.parse(header.substring(7))
-                    .flatMap(users::findById)
+                    .flatMap(p -> users.findById(p.userId()).filter(u -> u.getTokenVersion() == p.tokenVersion()))
                     .filter(u -> u.getStatus() == AppUser.Status.ACTIVE)
                     .ifPresent(u -> {
                         AuthUser principal = new AuthUser(u.getId(), u.getEmail(), u.getRole());

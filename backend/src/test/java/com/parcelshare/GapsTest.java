@@ -39,6 +39,7 @@ import org.springframework.mail.javamail.JavaMailSender;
                 "spring.datasource.password=${TEST_DB_PASSWORD:}",
                 "parcelshare.rate-limit-per-minute=100000",
                 "parcelshare.release-window-hours=48",
+                "parcelshare.allow-dev-defaults=true",
                 "parcelshare.admin-password=TestAdmin123!"
         })
 class GapsTest {

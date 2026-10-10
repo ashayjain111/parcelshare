@@ -117,6 +117,7 @@ public class AuthController {
         u.setPasswordHash(encoder.encode(req.password()));
         u.setResetTokenHash(null);
         u.setResetExpiresAt(null);
+        u.setTokenVersion(u.getTokenVersion() + 1);
         return Map.of("status", "Password updated. You can log in now.");
     }
 

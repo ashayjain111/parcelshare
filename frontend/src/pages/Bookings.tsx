@@ -1,10 +1,11 @@
+import { toast } from '../components/Toast'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { QRCodeSVG } from 'qrcode.react'
 import { Suspense, lazy, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import EvidencePanel from '../components/Evidence'
 import ProgressTrack from '../components/ProgressTrack'
-import { Button, Card, Empty, ErrorBox, Field, Loading, PageTitle, Person, StatusBadge, Timeline } from '../components/ui'
+import { Button, Card, Empty, ListSkeleton, ErrorBox, Field, Loading, PageTitle, Person, StatusBadge, Timeline } from '../components/ui'
 import { api, dateTime, fetchConfig, kg, rupees } from '../lib'
 import type { BookingView, EventView } from '../lib'
 
@@ -15,8 +16,8 @@ export function BookingList() {
   return (
     <>
       <PageTitle title="Bookings" sub="Every parcel you are sending or carrying." />
-      {q.isLoading ? <Loading /> : !q.data?.length ? <Empty>No bookings yet.</Empty> : (
-        <div className="space-y-3">
+      {q.isLoading ? <ListSkeleton /> : !q.data?.length ? <Empty>No bookings yet.</Empty> : (
+        <div className="stagger space-y-3">
           {q.data.map((b) => (
             <Link key={b.id} to={`/bookings/${b.id}`}>
               <Card className="hover:border-indigo-300">
@@ -66,7 +67,7 @@ export function BookingDetail() {
   const [scanMsg, setScanMsg] = useState<string | null>(null)
   const [f, setF] = useState({ code: '', checked: false, note: '', reason: '', score: 5, comment: '' })
 
-  const done = () => { qc.invalidateQueries(); setPanel(null) }
+  const done = () => { qc.invalidateQueries(); setPanel(null); toast('Done. The booking was updated.') }
   const post = (path: string, body?: unknown) => api(`/bookings/${id}/${path}`, { method: 'POST', body })
   const act = useMutation({ mutationFn: (fn: () => Promise<unknown>) => fn(), onSuccess: done })
 

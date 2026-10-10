@@ -22,7 +22,7 @@ public class AppUser {
 
     public enum Role { USER, ADMIN }
 
-    public enum Status { ACTIVE, SUSPENDED }
+    public enum Status { ACTIVE, SUSPENDED, DELETED }
 
     public enum Verification { NONE, PENDING, APPROVED, REJECTED }
 
@@ -60,6 +60,11 @@ public class AppUser {
 
     private String resetTokenHash;
     private Instant resetExpiresAt;
+
+    /** Bumped on password change/reset: every earlier login token carries the old number and stops working. */
+    private int tokenVersion;
+
+    private Instant deletedAt;
 
     private int ratingSum;
     private int ratingCount;

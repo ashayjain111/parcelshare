@@ -2,8 +2,9 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { useAuth } from '../auth'
+import { toast } from '../components/Toast'
 import { Button, Card, Empty, ErrorBox, Field, PageTitle } from '../components/ui'
-import { api, dateOnly } from '../lib'
+import { api, dateOnly, setToken } from '../lib'
 import type { Review } from '../lib'
 
 function Stat({ value, label }: { value: string; label: string }) {
@@ -16,7 +17,9 @@ function Stat({ value, label }: { value: string; label: string }) {
 }
 
 export default function Profile() {
-  const { user, refresh } = useAuth()
+  const { user, refresh, logout } = useAuth()
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [deletePw, setDeletePw] = useState('')
   const [note, setNote] = useState('')
   const [name, setName] = useState(user?.fullName ?? '')
   const [phone, setPhone] = useState(user?.phone ?? '')
@@ -35,13 +38,33 @@ export default function Profile() {
     },
   })
   const changePw = useMutation({
-    mutationFn: () => api('/me/password', { body: pw }),
-    onSuccess: () => {
+    mutationFn: () => api<{ token: string }>('/me/password', { body: pw }),
+    onSuccess: (r) => {
+      setToken(r.token) // every other device was just signed out; this one gets a fresh token and stays signed in
       setPw({ current: '', next: '' })
       setPwDone(true)
       setTimeout(() => setPwDone(false), 3000)
     },
   })
+
+  const del = useMutation({
+    mutationFn: () => api('/me/delete', { body: { password: deletePw } }),
+    onSuccess: () => {
+      logout() // signing out sends a protected page to the login screen, where the confirmation below is shown
+      toast('Your account was deleted and your personal details removed.')
+    },
+  })
+
+  async function download() {
+    const data = await api('/me/export')
+    const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }))
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'parcelshare-my-data.json'
+    a.click()
+    URL.revokeObjectURL(url)
+    toast('Your data was downloaded.')
+  }
 
   if (!user) return null
   const onSave = (e: FormEvent) => { e.preventDefault(); save.mutate() }
@@ -102,6 +125,26 @@ export default function Profile() {
           </div>
         )}
         {user.travellerVerification === 'PENDING' && <p className="mt-3 text-sm text-amber-700">Your request is waiting for admin review.</p>}
+      </Card>
+
+      <Card>
+        <h2 className="font-display text-lg font-semibold text-white">Your data</h2>
+        <p className="mt-1 text-sm text-slate-500">
+          Download a copy of everything we hold about you, or delete your account. Deleting removes your name, email, phone and
+          notifications. Bookings other people took part in stay in their history, but no longer identify you.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Button variant="secondary" onClick={() => download().catch((e) => toast(String(e.message ?? e), 'err'))}>Download my data</Button>
+          <Button variant="danger" onClick={() => setConfirmDelete(!confirmDelete)}>Delete my account</Button>
+        </div>
+        {confirmDelete && (
+          <form onSubmit={(e) => { e.preventDefault(); del.mutate() }} className="mt-4 space-y-3 rounded-xl border border-red-200 bg-red-50 p-4">
+            <p className="text-sm text-red-800">This cannot be undone. Enter your password to confirm.</p>
+            <Field label="Password"><input type="password" required autoComplete="current-password" value={deletePw} onChange={(e) => setDeletePw(e.target.value)} /></Field>
+            <ErrorBox error={del.error} />
+            <Button variant="danger" disabled={!deletePw || del.isPending}>Permanently delete my account</Button>
+          </form>
+        )}
       </Card>
 
       <div>

@@ -28,9 +28,18 @@ export const setToken = (t: string | null) => {
   }
 }
 
+/** fetch that turns a network failure into a clear, human message (offline, server asleep, wrong URL). */
+async function safeFetch(url: string, init?: RequestInit): Promise<Response> {
+  try {
+    return await fetch(url, init)
+  } catch {
+    throw new ApiError(0, 'Cannot reach the server. Check your connection, or it may be waking up. Try again in a moment.')
+  }
+}
+
 export async function api<T = unknown>(path: string, opts: { method?: string; body?: unknown } = {}): Promise<T> {
   const token = getToken()
-  const res = await fetch(BASE + path, {
+  const res = await safeFetch(BASE + path, {
     method: opts.method ?? (opts.body !== undefined ? 'POST' : 'GET'),
     headers: {
       'Content-Type': 'application/json',
@@ -61,14 +70,14 @@ export const fetchConfig = () => api<{ demoMode: boolean }>('/public/config')
 /** Authenticated binary download (images can't use a plain <img src> because the API needs the bearer token). */
 export async function apiBlob(path: string): Promise<Blob> {
   const token = getToken()
-  const res = await fetch(BASE + path, { headers: token ? { Authorization: `Bearer ${token}` } : {} })
+  const res = await safeFetch(BASE + path, { headers: token ? { Authorization: `Bearer ${token}` } : {} })
   if (!res.ok) throw new ApiError(res.status, 'Could not load file')
   return res.blob()
 }
 
 export async function apiUpload<T = unknown>(path: string, form: FormData): Promise<T> {
   const token = getToken()
-  const res = await fetch(BASE + path, { method: 'POST', headers: token ? { Authorization: `Bearer ${token}` } : {}, body: form })
+  const res = await safeFetch(BASE + path, { method: 'POST', headers: token ? { Authorization: `Bearer ${token}` } : {}, body: form })
   const text = await res.text()
   let data: unknown = null
   try {

@@ -41,6 +41,7 @@ public class MeController {
     private final UserRepository users;
     private final PasswordEncoder encoder;
     private final RatingRepository ratings;
+    private final JwtService jwt;
 
     @GetMapping
     @Transactional(readOnly = true)
@@ -65,7 +66,8 @@ public class MeController {
             throw ApiException.bad("Your current password is incorrect");
         }
         u.setPasswordHash(encoder.encode(req.next()));
-        return Map.of("status", "Password changed");
+        u.setTokenVersion(u.getTokenVersion() + 1); // signs out every other device and any stolen token
+        return Map.of("status", "Password changed", "token", jwt.issue(u));
     }
 
     /** What other people said about you (most recent first). */

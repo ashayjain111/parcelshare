@@ -1,6 +1,7 @@
 package com.parcelshare.identity;
 
 import com.parcelshare.common.AppProps;
+import com.parcelshare.common.ProductionGuard;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +20,15 @@ public class BootstrapAdmin implements ApplicationRunner {
     private final AppProps props;
     private final UserRepository users;
     private final PasswordEncoder encoder;
+    private final ProductionGuard guard;
 
     @Override
     public void run(ApplicationArguments args) {
         if (props.adminPassword().isBlank() || users.existsByEmailIgnoreCase(props.adminEmail())) {
+            return;
+        }
+        if (ProductionGuard.DEV_ADMIN_PASSWORD.equals(props.adminPassword()) && !guard.knownAdminPasswordAllowed()) {
+            log.warn("Not creating the admin account: ADMIN_PASSWORD is unset or the development default.");
             return;
         }
         AppUser admin = new AppUser();

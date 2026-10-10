@@ -1,9 +1,10 @@
+import { toast } from '../components/Toast'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import TiltCard from '../components/TiltCard'
-import { Button, Card, Empty, ErrorBox, Field, Loading, PageTitle, Person, StatusBadge } from '../components/ui'
+import { Button, Card, Empty, ListSkeleton, ErrorBox, Field, Loading, PageTitle, Person, StatusBadge } from '../components/ui'
 import { api, dateTime, kg, localInput, rupees, toIso } from '../lib'
 import type { BookingView, City, ParcelMatch, ParcelView, TripView } from '../lib'
 import { useAuth } from '../auth'
@@ -43,10 +44,10 @@ export function BrowseTrips() {
         </Field>
         <Field label="Date"><input type="date" value={date} onChange={(e) => setDate(e.target.value)} /></Field>
       </Card>
-      {trips.isLoading ? <Loading /> : trips.error ? <ErrorBox error={trips.error} /> : !trips.data?.length ? (
+      {trips.isLoading ? <ListSkeleton /> : trips.error ? <ErrorBox error={trips.error} /> : !trips.data?.length ? (
         <Empty>No trips match yet. <Link to="/parcels/new" className="text-indigo-600">Post your parcel</Link> and travellers on that route will see it.</Empty>
       ) : (
-        <div className="space-y-3">{trips.data.map((t) => <TripCard key={t.id} trip={t} />)}</div>
+        <div className="stagger space-y-3">{trips.data.map((t) => <TripCard key={t.id} trip={t} />)}</div>
       )}
     </>
   )
@@ -81,13 +82,14 @@ function BookPanel({ trip }: { trip: TripView }) {
     mutationFn: (parcelId: number) => api<BookingView>('/bookings', { body: { tripId: trip.id, parcelId } }),
     onSuccess: (b) => {
       qc.invalidateQueries()
+      toast('Booking requested. Your payment is held until delivery.')
       nav(`/bookings/${b.id}`)
     },
   })
   const open = parcels.data?.filter((p) => p.status === 'OPEN') ?? []
   return (
     <div className="mt-3 space-y-2 border-t border-slate-100 pt-3">
-      {parcels.isLoading ? <Loading /> : !open.length ? (
+      {parcels.isLoading ? <ListSkeleton /> : !open.length ? (
         <p className="text-sm text-slate-600">You have no open parcels. <Link to="/parcels/new" className="text-indigo-600">Create one first</Link>.</p>
       ) : open.map((p) => (
         <div key={p.id} className="flex items-center justify-between gap-2 rounded-lg bg-slate-50 px-3 py-2 text-sm">
@@ -129,7 +131,7 @@ export function NewTrip() {
         </Card>
       )}
       <Card>
-        <form onSubmit={submit} className="space-y-3">
+        <form onSubmit={submit} className="stagger space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <Field label="From"><select required value={v.origin} onChange={set('origin')}><option value="">Select</option>{cities?.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select></Field>
             <Field label="To"><select required value={v.dest} onChange={set('dest')}><option value="">Select</option>{cities?.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select></Field>
@@ -157,8 +159,8 @@ export function MyTrips() {
   return (
     <>
       <PageTitle title="My trips" right={<Link to="/trips/new"><Button>Post a trip</Button></Link>} />
-      {trips.isLoading ? <Loading /> : !trips.data?.length ? <Empty>You have not posted any trips yet.</Empty> : (
-        <div className="space-y-3">
+      {trips.isLoading ? <ListSkeleton /> : !trips.data?.length ? <Empty>You have not posted any trips yet.</Empty> : (
+        <div className="stagger space-y-3">
           {trips.data.map((t) => (
             <Link key={t.id} to={`/trips/${t.id}`}>
               <Card className="hover:border-indigo-300">
@@ -188,11 +190,11 @@ export function TripDetail() {
   const qc = useQueryClient()
   const offer = useMutation({
     mutationFn: (parcelId: number) => api(`/trips/${id}/offers`, { body: { parcelId } }),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['trip-matches', id] }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['trip-matches', id] }); toast('Offer sent. The sender has been notified.') },
   })
   const cancel = useMutation({
     mutationFn: () => api(`/trips/${id}/cancel`, { method: 'POST' }),
-    onSuccess: () => qc.invalidateQueries(),
+    onSuccess: () => { qc.invalidateQueries(); toast('Trip cancelled. Any requests were declined and refunded.') },
   })
   if (trip.isLoading) return <Loading />
   if (trip.error || !trip.data) return <ErrorBox error={trip.error} />
@@ -219,8 +221,8 @@ export function TripDetail() {
           <h2 className="mb-2 font-semibold">Parcels that fit this trip</h2>
           <p className="mb-3 text-sm text-slate-500">Offer to carry a parcel and the sender is notified. They choose, book and pay, and you then accept from the Bookings page.</p>
           <ErrorBox error={offer.error} />
-          {matches.isLoading ? <Loading /> : !matches.data?.length ? <Empty>No matching parcels yet. They will appear here when senders post them.</Empty> : (
-            <div className="space-y-2">
+          {matches.isLoading ? <ListSkeleton /> : !matches.data?.length ? <Empty>No matching parcels yet. They will appear here when senders post them.</Empty> : (
+            <div className="stagger space-y-2">
               {matches.data.map((m) => (
                 <Card key={m.parcel.id}>
                   <div className="flex flex-wrap justify-between gap-2">

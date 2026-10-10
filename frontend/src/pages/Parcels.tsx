@@ -1,8 +1,9 @@
+import { toast } from '../components/Toast'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Button, Card, Empty, ErrorBox, Field, Loading, PageTitle, Person, StatusBadge } from '../components/ui'
+import { Button, Card, Empty, ListSkeleton, ErrorBox, Field, Loading, PageTitle, Person, StatusBadge } from '../components/ui'
 import { api, dateTime, kg, localInput, rupees, toIso } from '../lib'
 import type { BookingView, Category, City, ParcelView, TripMatch } from '../lib'
 
@@ -34,7 +35,7 @@ export function NewParcel() {
     <div className="mx-auto max-w-lg">
       <PageTitle title="Send a parcel" sub="Small, low-value items only. Travellers will inspect the contents at handover." />
       <Card>
-        <form onSubmit={submit} className="space-y-3">
+        <form onSubmit={submit} className="stagger space-y-3">
           <div className="grid grid-cols-2 gap-3">
             <Field label="Pickup city"><select required value={v.origin} onChange={set('origin')}><option value="">Select</option>{cities.data?.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select></Field>
             <Field label="Deliver to"><select required value={v.dest} onChange={set('dest')}><option value="">Select</option>{cities.data?.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}</select></Field>
@@ -73,8 +74,8 @@ export function MyParcels() {
   return (
     <>
       <PageTitle title="My parcels" right={<Link to="/parcels/new"><Button>Send a parcel</Button></Link>} />
-      {parcels.isLoading ? <Loading /> : !parcels.data?.length ? <Empty>No parcels yet.</Empty> : (
-        <div className="space-y-3">
+      {parcels.isLoading ? <ListSkeleton /> : !parcels.data?.length ? <Empty>No parcels yet.</Empty> : (
+        <div className="stagger space-y-3">
           {parcels.data.map((p) => (
             <Link key={p.id} to={`/parcels/${p.id}`}>
               <Card className="hover:border-indigo-300">
@@ -102,7 +103,7 @@ export function ParcelDetail() {
   const bookings = useQuery({ queryKey: ['bookings'], queryFn: () => api<BookingView[]>('/bookings/mine') })
   const book = useMutation({
     mutationFn: (tripId: number) => api<BookingView>('/bookings', { body: { tripId, parcelId: Number(id) } }),
-    onSuccess: (b) => { qc.invalidateQueries(); nav(`/bookings/${b.id}`) },
+    onSuccess: (b) => { qc.invalidateQueries(); toast('Booking requested. Your payment is held until delivery.'); nav(`/bookings/${b.id}`) },
   })
   const cancel = useMutation({
     mutationFn: () => api(`/parcels/${id}/cancel`, { method: 'POST' }),
@@ -129,10 +130,10 @@ export function ParcelDetail() {
       {isOpen && (
         <>
           <h2 className="mb-2 font-semibold">Best travellers for this parcel</h2>
-          {matches.isLoading ? <Loading /> : !matches.data?.length ? (
+          {matches.isLoading ? <ListSkeleton /> : !matches.data?.length ? (
             <Empty>No travellers on this route yet. Check back soon: your parcel stays visible to travellers.</Empty>
           ) : (
-            <div className="space-y-3">
+            <div className="stagger space-y-3">
               {matches.data.map((m) => (
                 <Card key={m.trip.id}>
                   <div className="flex flex-wrap items-start justify-between gap-3">

@@ -2,6 +2,7 @@ import { Suspense, lazy, useState } from 'react'
 import type { FormEvent, ReactNode } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../auth'
+import ErrorBoundary from '../components/ErrorBoundary'
 import { Button, ErrorBox, Field } from '../components/ui'
 import { api } from '../lib'
 import { webglAvailable } from '../scene/env'
@@ -19,9 +20,11 @@ function AuthShell({ title, sub, children, footer }: { title: string; sub: strin
         style={{ maskImage: 'radial-gradient(closest-side, #000 58%, transparent 100%)', WebkitMaskImage: 'radial-gradient(closest-side, #000 58%, transparent 100%)' }}
       >
         {gl && (
-          <Suspense fallback={null}>
-            <MiniParcel />
-          </Suspense>
+          <ErrorBoundary fallback={null}>
+            <Suspense fallback={null}>
+              <MiniParcel />
+            </Suspense>
+          </ErrorBoundary>
         )}
       </div>
       <div className="hidden text-center lg:col-start-1 lg:row-start-2 lg:block">

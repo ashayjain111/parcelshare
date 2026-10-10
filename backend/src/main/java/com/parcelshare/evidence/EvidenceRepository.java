@@ -15,5 +15,10 @@ public interface EvidenceRepository extends JpaRepository<Evidence, Long> {
 
     long countByBookingId(Long bookingId);
 
+    /** Deletes old photos of bookings that are over (delivered, resolved, cancelled or rejected). */
+    @org.springframework.data.jpa.repository.Modifying
+    @Query("delete from Evidence e where e.createdAt < :cutoff and e.bookingId in (select b.id from Booking b where b.status in :finished)")
+    int purgeFinished(java.time.Instant cutoff, java.util.Collection<com.parcelshare.booking.BookingStatus> finished);
+
     List<Evidence> findByBookingIdOrderById(Long bookingId);
 }

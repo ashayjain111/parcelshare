@@ -37,6 +37,7 @@ import org.springframework.http.ResponseEntity;
                 "spring.datasource.password=${TEST_DB_PASSWORD:}",
                 "parcelshare.release-window-hours=0",
                 "parcelshare.rate-limit-per-minute=100000",
+                "parcelshare.allow-dev-defaults=true",
                 "parcelshare.admin-password=TestAdmin123!"
         })
 class FullFlowTest {

@@ -20,5 +20,7 @@ public record AppProps(
         @DefaultValue("false") boolean seedDemo,
         @DefaultValue("false") boolean demoMode,
         @DefaultValue("") String mailFrom,
-        @DefaultValue("http://localhost:5180") String frontendUrl) {
+        @DefaultValue("http://localhost:5180") String frontendUrl,
+        @DefaultValue("false") boolean allowDevDefaults,
+        @DefaultValue("180") int evidenceRetentionDays) {
 }

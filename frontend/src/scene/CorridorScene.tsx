@@ -1,3 +1,4 @@
+import { Sparkles } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Bloom, EffectComposer, Vignette } from '@react-three/postprocessing'
 import { useEffect, useMemo, useRef } from 'react'
@@ -320,7 +321,7 @@ function ArrivalStage({ groupRef, tRef, count }: { groupRef: RefObject<THREE.Gro
 
 // ------------------------------------------------------------------ rig: parcel + camera
 
-function Rig({ progress, mobile }: { progress: MutableRefObject<number>; mobile: boolean }) {
+function Rig({ progress, mobile, calm }: { progress: MutableRefObject<number>; mobile: boolean; calm: boolean }) {
   const tRef = useRef(0)
   const parcel = useRef<THREE.Group>(null)
   const net = useRef<THREE.Group>(null)
@@ -346,6 +347,10 @@ function Rig({ progress, mobile }: { progress: MutableRefObject<number>; mobile:
 
     if (parcel.current) {
       parcel.current.position.copy(tmpA)
+      // the parcel leans toward the pointer, like it is curious about you
+      const lean = 1 - Math.exp(-d * 4)
+      parcel.current.rotation.x += (-mouse.y * 0.2 * motion.amb - parcel.current.rotation.x) * lean
+      parcel.current.rotation.y += (mouse.x * 0.3 * motion.amb - parcel.current.rotation.y) * lean
       const e = 1 - Math.pow(1 - intro.current, 3)
       const back = 1 + 1.70158 * Math.pow(intro.current - 1, 3) + 1.70158 * Math.pow(intro.current - 1, 2)
       parcel.current.scale.setScalar(Math.max(0.001, (mobile ? 1.0 : 1.45) * (1 - 0.38 * sstep(0, 0.12, t)) * (e < 1 ? back : 1)))
@@ -375,7 +380,10 @@ function Rig({ progress, mobile }: { progress: MutableRefObject<number>; mobile:
 
   return (
     <>
-      <group ref={parcel}><ParcelModel /></group>
+      <group ref={parcel}>
+        <ParcelModel />
+        <Sparkles count={mobile ? 28 : 64} scale={[3.6, 2.8, 3.6]} size={mobile ? 2.4 : 3.4} speed={calm ? 0.04 : 0.45} opacity={0.9} noise={0.6} color="#67e8f9" />
+      </group>
       <NetworkStage groupRef={net} />
       <HandoverStage groupRef={hand} />
       <ChainStage groupRef={chain} tRef={tRef} />
@@ -420,7 +428,7 @@ export default function CorridorScene({ progress, mobile, calm }: { progress: Mu
         ]}
       />
       <Dust count={mobile ? 900 : 2300} box={dust} />
-      <Rig progress={progress} mobile={mobile} />
+      <Rig progress={progress} mobile={mobile} calm={calm} />
       <EffectComposer multisampling={0}>
         <Bloom intensity={mobile ? 0.85 : 1.2} luminanceThreshold={0.3} luminanceSmoothing={0.45} mipmapBlur radius={0.75} />
         <Vignette eskil={false} offset={0.22} darkness={0.75} />

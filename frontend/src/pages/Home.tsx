@@ -3,6 +3,8 @@ import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { useAuth } from '../auth'
+import ErrorBoundary from '../components/ErrorBoundary'
+import Magnetic from '../components/Magnetic'
 import Reveal from '../components/Reveal'
 import TiltCard from '../components/TiltCard'
 import { useMotion } from '../motion'
@@ -10,6 +12,21 @@ import { webglAvailable } from '../scene/env'
 
 // The 3D scene is large (three.js), so it loads after the page shell and only on this screen.
 const CorridorScene = lazy(() => import('../scene/CorridorScene'))
+
+const CITIES = ['Delhi NCR', 'Lucknow', 'Kanpur', 'Jaipur', 'Chandigarh', 'Dehradun', 'Agra', 'Varanasi']
+
+/** Reveals a line of text word by word, each word blurring into focus a beat after the last. */
+function Words({ text, className = '', start = 0 }: { text: string; className?: string; start?: number }) {
+  return (
+    <>
+      {text.split(' ').map((w, i) => (
+        <span key={i}>
+          <span className={`word ${className}`} style={{ animationDelay: `${(start + i) * 75 + 150}ms` }}>{w}</span>{' '}
+        </span>
+      ))}
+    </>
+  )
+}
 
 const shadow = '[text-shadow:0_2px_40px_rgb(5_6_15/0.95)]'
 
@@ -222,7 +239,9 @@ function Landing() {
       {gl && (
         <div className="pointer-events-none fixed inset-0 z-0" aria-hidden>
           <Suspense fallback={null}>
-            <CorridorScene progress={progress} mobile={mobile} calm={calm} />
+            <ErrorBoundary fallback={null}>
+              <CorridorScene progress={progress} mobile={mobile} calm={calm} />
+            </ErrorBoundary>
           </Suspense>
         </div>
       )}
@@ -239,7 +258,7 @@ function Landing() {
             </Reveal>
             <Reveal delay={90}>
               <h1 className={`mt-6 font-display text-5xl font-semibold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl ${shadow}`}>
-                Send it with someone <span className="text-gradient">already going there.</span>
+                <Words text="Send it with someone" /> <Words text="already going there." className="text-gradient" start={4} />
               </h1>
             </Reveal>
             <Reveal delay={180}>
@@ -249,12 +268,16 @@ function Landing() {
               </p>
             </Reveal>
             <Reveal delay={270} className="mt-9 flex flex-wrap items-center gap-3">
-              <Link to="/register" className="rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_10px_40px_-8px_rgba(99,102,241,0.95)] transition hover:brightness-110 active:scale-[0.98]">
-                Get started free
-              </Link>
-              <Link to="/login" className="rounded-2xl border border-white/15 bg-white/[0.05] px-7 py-3.5 text-sm font-semibold text-slate-900 backdrop-blur transition hover:bg-white/10">
-                Log in
-              </Link>
+              <Magnetic>
+                <Link to="/register" className="btn-shine inline-block rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_10px_40px_-8px_rgba(99,102,241,0.95)] transition hover:brightness-110 active:scale-[0.98]">
+                  Get started free
+                </Link>
+              </Magnetic>
+              <Magnetic strength={0.18}>
+                <Link to="/login" className="inline-block rounded-2xl border border-white/15 bg-white/[0.05] px-7 py-3.5 text-sm font-semibold text-slate-900 backdrop-blur transition hover:bg-white/10">
+                  Log in
+                </Link>
+              </Magnetic>
             </Reveal>
             <Reveal delay={360} className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-500">
               {['No warehouses or couriers', 'Payment held until delivery', 'Tamper-evident history'].map((t) => (
@@ -335,13 +358,23 @@ function Landing() {
           </Reveal>
         </section>
 
+        {/* routes marquee */}
+        <section aria-label="Routes you can travel today" className="relative overflow-hidden border-y border-white/10 bg-white/[0.02] py-7 backdrop-blur-sm">
+          <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-400">Routes you can travel today</p>
+          <div className="marquee flex w-max gap-12 whitespace-nowrap font-display text-2xl font-semibold text-slate-600">
+            {[...CITIES, ...CITIES].map((c, i) => (
+              <span key={i} className="flex items-center gap-12">{c}<span className="text-cyan-300">→</span></span>
+            ))}
+          </div>
+        </section>
+
         {/* final CTA */}
         <section data-stage={1} className="mx-auto flex min-h-[90svh] max-w-4xl flex-col items-center justify-center px-5 py-24 text-center">
           <Reveal><h2 className={`font-display text-5xl font-semibold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl ${shadow}`}>Your next parcel is <span className="text-gradient">already travelling.</span></h2></Reveal>
           <Reveal delay={120}><p className={`mx-auto mt-6 max-w-xl text-base text-slate-600 sm:text-lg ${shadow}`}>Join in a minute. Post a trip to earn on a journey you are already taking, or send something small today.</p></Reveal>
           <Reveal delay={220} className="mt-10 flex flex-wrap justify-center gap-3">
-            <Link to="/register" className="rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-8 py-4 text-sm font-semibold text-white shadow-[0_10px_50px_-8px_rgba(99,102,241,1)] transition hover:brightness-110 active:scale-[0.98]">Create your account</Link>
-            <Link to="/login" className="rounded-2xl border border-white/15 bg-white/[0.05] px-8 py-4 text-sm font-semibold text-slate-900 backdrop-blur transition hover:bg-white/10">Log in</Link>
+            <Magnetic><Link to="/register" className="btn-shine inline-block rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-8 py-4 text-sm font-semibold text-white shadow-[0_10px_50px_-8px_rgba(99,102,241,1)] transition hover:brightness-110 active:scale-[0.98]">Create your account</Link></Magnetic>
+            <Magnetic strength={0.18}><Link to="/login" className="inline-block rounded-2xl border border-white/15 bg-white/[0.05] px-8 py-4 text-sm font-semibold text-slate-900 backdrop-blur transition hover:bg-white/10">Log in</Link></Magnetic>
           </Reveal>
         </section>
       </div>

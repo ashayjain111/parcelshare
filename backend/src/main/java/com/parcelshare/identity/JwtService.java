@@ -30,17 +30,22 @@ public class JwtService {
         Instant now = Instant.now();
         return Jwts.builder()
                 .subject(String.valueOf(user.getId()))
+                .claim("tv", user.getTokenVersion())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(hours, ChronoUnit.HOURS)))
                 .signWith(key)
                 .compact();
     }
 
-    /** Returns the user id if the token is valid and unexpired. */
-    public Optional<Long> parse(String token) {
+    public record Parsed(long userId, int tokenVersion) {
+    }
+
+    /** Returns who the token belongs to (and which token generation it is) if it is valid and unexpired. */
+    public Optional<Parsed> parse(String token) {
         try {
-            String sub = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload().getSubject();
-            return Optional.of(Long.parseLong(sub));
+            var claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
+            Integer tv = claims.get("tv", Integer.class);
+            return Optional.of(new Parsed(Long.parseLong(claims.getSubject()), tv == null ? 0 : tv));
         } catch (Exception e) {
             return Optional.empty();
         }

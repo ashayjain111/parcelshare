@@ -1,9 +1,10 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Layout, { RequireAuth } from './components/Layout'
 import Admin from './pages/Admin'
 import { ForgotPassword, Login, Register, ResetPassword } from './pages/Auth'
 import { BookingDetail, BookingList } from './pages/Bookings'
 import Home from './pages/Home'
+import NotFound from './pages/NotFound'
 import { MyParcels, NewParcel, ParcelDetail } from './pages/Parcels'
 import { ProhibitedItems, Terms } from './pages/Legal'
 import Profile from './pages/Profile'
@@ -42,7 +43,7 @@ export default function App() {
           <Route path="/admin" element={<Admin />} />
         </Route>
 
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   )

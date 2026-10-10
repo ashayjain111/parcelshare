@@ -6,6 +6,8 @@ import { fetchConfig } from '../lib'
 import { useMotion } from '../motion'
 import Logo from './Logo'
 import NotificationBell from './NotificationBell'
+import ScrollProgress from './ScrollProgress'
+import { Toaster } from './Toast'
 import { Loading } from './ui'
 
 const link = ({ isActive }: { isActive: boolean }) =>
@@ -47,6 +49,13 @@ export default function Layout() {
 
   return (
     <div className="relative z-[1] min-h-screen">
+      {!landing && (
+        <a href="#main" className="sr-only z-[80] rounded-lg bg-white px-4 py-2 text-sm font-semibold text-[#05060f] focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
+          Skip to content
+        </a>
+      )}
+      <ScrollProgress />
+      <Toaster />
       {config.data?.demoMode && (
         <div className="relative z-50 bg-amber-100 px-4 py-1.5 text-center text-xs font-medium text-amber-800">
           Demo mode: payments are simulated and booking steps can be fast-forwarded.
@@ -125,7 +134,7 @@ export default function Layout() {
       {landing ? (
         <Outlet />
       ) : (
-        <main key={loc.pathname} className="page-enter mx-auto max-w-6xl px-4 pb-16 pt-10">
+        <main id="main" tabIndex={-1} key={loc.pathname} className="page-enter mx-auto max-w-6xl px-4 pb-16 pt-10">
           <Outlet />
         </main>
       )}
@@ -134,7 +143,7 @@ export default function Layout() {
         onClick={() => setMotion(motion === 'full' ? 'calm' : 'full')}
         title={motion === 'full' ? 'Switch to calm motion (less movement)' : 'Switch to full motion (3D effects and animation)'}
         aria-pressed={motion === 'full'}
-        className="glass fixed bottom-4 left-4 z-50 flex cursor-pointer items-center gap-2 rounded-full px-3.5 py-2 text-xs font-medium text-slate-700 transition hover:text-slate-900"
+        className="glass fixed bottom-4 right-4 z-50 flex cursor-pointer items-center gap-2 rounded-full px-3.5 py-2 text-xs font-medium text-slate-700 transition hover:text-slate-900"
       >
         <span className={`h-2 w-2 rounded-full ${motion === 'full' ? 'bg-cyan-400 shadow-[0_0_10px_2px_rgba(34,211,238,0.8)]' : 'bg-slate-400'}`} />
         {motion === 'full' ? 'Full motion' : 'Calm motion'}

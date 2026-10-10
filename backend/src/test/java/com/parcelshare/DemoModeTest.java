@@ -30,6 +30,7 @@ import org.springframework.http.ResponseEntity;
                 "parcelshare.demo-mode=true",
                 "parcelshare.rate-limit-per-minute=100000",
                 "parcelshare.release-window-hours=48",
+                "parcelshare.allow-dev-defaults=true",
                 "parcelshare.admin-password=TestAdmin123!"
         })
 class DemoModeTest {

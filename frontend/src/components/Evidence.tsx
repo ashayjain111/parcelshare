@@ -1,3 +1,4 @@
+import { toast } from './Toast'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useRef, useState } from 'react'
 import { Button, Card, ErrorBox } from './ui'
@@ -73,6 +74,7 @@ export default function EvidencePanel({ bookingId, role, status }: { bookingId: 
     },
     onSuccess: () => {
       qc.invalidateQueries()
+      toast('Photo added to the booking.')
       if (input.current) input.current.value = ''
     },
   })

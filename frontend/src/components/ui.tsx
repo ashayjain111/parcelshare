@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import { EVENT_LABELS, dateTime } from '../lib'
 import type { EventView, UserSummary } from '../lib'
@@ -21,7 +22,7 @@ export function PageTitle({ title, sub, right }: { title: string; sub?: string; 
 type Variant = 'primary' | 'secondary' | 'danger' | 'ghost'
 const VARIANTS: Record<Variant, string> = {
   primary:
-    'bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 bg-[length:200%_auto] text-white shadow-[0_8px_30px_-8px_rgba(99,102,241,0.9)] hover:bg-right hover:shadow-[0_8px_40px_-6px_rgba(99,102,241,1)] disabled:opacity-40 disabled:shadow-none',
+    'btn-shine bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 bg-[length:200%_auto] text-white shadow-[0_8px_30px_-8px_rgba(99,102,241,0.9)] hover:bg-right hover:shadow-[0_8px_40px_-6px_rgba(99,102,241,1)] disabled:opacity-40 disabled:shadow-none',
   secondary:
     'border border-white/12 bg-white/[0.05] text-slate-800 hover:border-white/25 hover:bg-white/[0.1] disabled:text-slate-400',
   danger:
@@ -63,10 +64,38 @@ export function ErrorBox({ error }: { error: unknown }) {
 }
 
 export function Loading() {
+  // Free hosting puts the server to sleep when idle; the first request can take up to a minute. Say so instead of looking frozen.
+  const [slow, setSlow] = useState(false)
+  useEffect(() => {
+    const t = setTimeout(() => setSlow(true), 5000)
+    return () => clearTimeout(t)
+  }, [])
   return (
-    <div className="flex items-center justify-center gap-3 py-14 text-sm text-slate-500" role="status">
-      <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
-      Loading…
+    <div className="flex flex-col items-center justify-center gap-3 py-14 text-sm text-slate-500" role="status">
+      <div className="flex items-center gap-3">
+        <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
+        Loading…
+      </div>
+      {slow && <p className="max-w-xs text-center text-xs text-slate-400">Still working. The server may be waking up after a quiet spell, which can take up to a minute.</p>}
+    </div>
+  )
+}
+
+/** A shimmering placeholder block shown while data loads, so the page keeps its shape instead of jumping. */
+export function Skeleton({ className = '' }: { className?: string }) {
+  return <div aria-hidden className={`skeleton rounded-xl ${className}`} />
+}
+
+export function ListSkeleton({ rows = 3 }: { rows?: number }) {
+  return (
+    <div className="space-y-3" role="status" aria-label="Loading">
+      {Array.from({ length: rows }, (_, i) => (
+        <div key={i} className="glass rounded-2xl p-5">
+          <Skeleton className="h-5 w-1/3" />
+          <Skeleton className="mt-3 h-3.5 w-2/3" />
+          <Skeleton className="mt-2 h-3.5 w-1/2" />
+        </div>
+      ))}
     </div>
   )
 }
