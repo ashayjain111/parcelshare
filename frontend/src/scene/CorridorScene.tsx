@@ -1,6 +1,5 @@
 import { Sparkles } from '@react-three/drei'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Bloom, EffectComposer, Vignette } from '@react-three/postprocessing'
 import { useEffect, useMemo, useRef } from 'react'
 import type { MutableRefObject, RefObject } from 'react'
 import * as THREE from 'three'
@@ -96,8 +95,7 @@ function NetworkStage({ groupRef }: { groupRef: RefObject<THREE.Group | null> })
         const m = new THREE.LineBasicMaterial({
           color: i === 0 ? GLOW_CYAN : GLOW_INDIGO,
           transparent: true,
-          opacity: i === 0 ? 0.95 : 0.4,
-          blending: THREE.AdditiveBlending,
+          opacity: i === 0 ? 0.95 : 0.5,
           toneMapped: false,
         })
         return new THREE.Line(g, m)
@@ -208,14 +206,14 @@ function HandoverStage({ groupRef }: { groupRef: RefObject<THREE.Group | null> }
       <group ref={qr} position={[0.1, 0.2, -3.6]} scale={1.9}>
         <instancedMesh ref={grid} args={[undefined, undefined, cells.length]}>
           <boxGeometry args={[0.105, 0.105, 0.04]} />
-          <meshBasicMaterial color={new THREE.Color('#fff1d0').multiplyScalar(1.5)} toneMapped={false} transparent opacity={0.5} />
+          <meshBasicMaterial color="#1d4ed8" toneMapped={false} transparent opacity={0.5} />
         </instancedMesh>
         <mesh ref={beam} position={[0, 0, 0.06]}>
           <planeGeometry args={[1.85, 0.04]} />
-          <meshBasicMaterial color={GLOW_CYAN} toneMapped={false} transparent blending={THREE.AdditiveBlending} />
+          <meshBasicMaterial color={GLOW_CYAN} toneMapped={false} transparent />
         </mesh>
       </group>
-      <pointLight color="#ffd58a" intensity={14} distance={9} />
+      <pointLight color="#9ccbff" intensity={14} distance={9} />
     </group>
   )
 }
@@ -228,7 +226,7 @@ function ChainStage({ groupRef, tRef }: { groupRef: RefObject<THREE.Group | null
   const geo = useMemo(() => new RoundedBoxGeometry(0.95, 0.5, 0.7, 4, 0.08), [])
   const edgeGeo = useMemo(() => new THREE.EdgesGeometry(geo, 28), [geo])
   const mats = useRef<(THREE.LineBasicMaterial | null)[]>([])
-  const dim = useMemo(() => new THREE.Color('#6b4a1c'), [])
+  const dim = useMemo(() => new THREE.Color('#a9bfe6'), [])
 
   useFrame(() => {
     const pz = PATH.getPoint(tRef.current).z
@@ -245,7 +243,7 @@ function ChainStage({ groupRef, tRef }: { groupRef: RefObject<THREE.Group | null
       {CHAIN_Z.map((z, i) => (
         <group key={i} position={[0, -1.4, z]}>
           <mesh geometry={geo}>
-            <meshPhysicalMaterial color="#17120c" metalness={1} roughness={0.22} clearcoat={1} envMapIntensity={1.3} transparent />
+            <meshPhysicalMaterial color="#d3e1fb" metalness={0.35} roughness={0.2} clearcoat={1} envMapIntensity={1.2} transparent />
           </mesh>
           <lineSegments geometry={edgeGeo}>
             <lineBasicMaterial ref={(el) => { mats.current[i] = el }} color={dim} toneMapped={false} transparent />
@@ -258,7 +256,7 @@ function ChainStage({ groupRef, tRef }: { groupRef: RefObject<THREE.Group | null
           )}
         </group>
       ))}
-      <pointLight color="#e0a64d" intensity={10} distance={14} position={[0, 0.5, -34]} />
+      <pointLight color="#9ccbff" intensity={10} distance={14} position={[0, 0.5, -34]} />
     </group>
   )
 }
@@ -312,9 +310,9 @@ function ArrivalStage({ groupRef, tRef, count }: { groupRef: RefObject<THREE.Gro
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         </bufferGeometry>
-        <pointsMaterial color={GLOW_CYAN} size={0.07} sizeAttenuation transparent opacity={0} depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} />
+        <pointsMaterial color={GLOW_CYAN} size={0.07} sizeAttenuation transparent opacity={0} depthWrite={false} toneMapped={false} />
       </points>
-      <pointLight color="#ffd58a" intensity={18} distance={12} />
+      <pointLight color="#9ccbff" intensity={18} distance={12} />
     </group>
   )
 }
@@ -382,7 +380,7 @@ function Rig({ progress, mobile, calm }: { progress: MutableRefObject<number>; m
     <>
       <group ref={parcel}>
         <ParcelModel />
-        <Sparkles count={mobile ? 22 : 48} scale={[3.6, 2.8, 3.6]} size={mobile ? 1.6 : 2.2} speed={calm ? 0.04 : 0.4} opacity={0.95} noise={0.5} color="#ffdf9e" />
+        <Sparkles count={mobile ? 22 : 48} scale={[3.6, 2.8, 3.6]} size={mobile ? 1.6 : 2.2} speed={calm ? 0.04 : 0.4} opacity={0.95} noise={0.5} color="#3b82f6" />
       </group>
       <NetworkStage groupRef={net} />
       <HandoverStage groupRef={hand} />
@@ -412,28 +410,22 @@ export default function CorridorScene({ progress, mobile, calm }: { progress: Mu
     <Canvas
       dpr={[1, mobile ? 1.5 : 2]}
       camera={{ fov: 42, position: [0, 0.3, 9], near: 0.1, far: 90 }}
-      gl={{ antialias: false, powerPreference: 'high-performance' }}
+      gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
     >
-      <color attach="background" args={['#0a0908']} />
-      <fog attach="fog" args={['#0a0908', 16, 52]} />
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[4, 6, 5]} intensity={1.1} color="#ffe9c4" />
+      <fog attach="fog" args={['#eef4ff', 18, 58]} />
+      <ambientLight intensity={0.9} />
+      <directionalLight position={[4, 6, 5]} intensity={1.5} color="#ffffff" />
       <Studio />
       <Nebula
         spots={[
-          { pos: [-6, 2, -8], color: '#8a5a1e', size: 26, opacity: 0.2 },
-          { pos: [8, -2, -22], color: '#0f5a58', size: 30, opacity: 0.17 },
-          { pos: [-5, 3, -36], color: '#6b2434', size: 28, opacity: 0.17 },
-          { pos: [3, 0, -52], color: '#8a5a1e', size: 34, opacity: 0.2 },
+          { pos: [-6, 2, -8], color: '#7db4ff', size: 26, opacity: 0.34 },
+          { pos: [8, -2, -22], color: '#5ec9f5', size: 30, opacity: 0.3 },
+          { pos: [-5, 3, -36], color: '#93b4ff', size: 28, opacity: 0.3 },
+          { pos: [3, 0, -52], color: '#7db4ff', size: 34, opacity: 0.34 },
         ]}
       />
       <Dust count={mobile ? 900 : 2300} box={dust} />
       <Rig progress={progress} mobile={mobile} calm={calm} />
-      <EffectComposer multisampling={mobile ? 0 : 4}>
-        {/* bloom only on the brightest highlights, so edges stay crisp instead of washing into a haze */}
-        <Bloom intensity={mobile ? 0.4 : 0.55} luminanceThreshold={0.7} luminanceSmoothing={0.12} mipmapBlur radius={0.4} />
-        <Vignette eskil={false} offset={0.25} darkness={0.62} />
-      </EffectComposer>
     </Canvas>
   )
 }

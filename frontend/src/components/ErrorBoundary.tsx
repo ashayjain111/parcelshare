@@ -26,8 +26,8 @@ export default class ErrorBoundary extends Component<Props, { failed: boolean }>
     if (!this.state.failed) return this.props.children
     if (this.props.fallback !== undefined) return this.props.fallback
     return (
-      <div className="mx-auto mt-24 max-w-md rounded-2xl border border-white/10 bg-white/[0.04] p-8 text-center">
-        <p className="font-display text-2xl font-semibold text-white">Something went wrong</p>
+      <div className="mx-auto mt-24 max-w-md rounded-2xl border border-slate-900/10 bg-slate-900/[0.04] p-8 text-center">
+        <p className="font-display text-2xl font-semibold text-slate-900">Something went wrong</p>
         <p className="mt-2 text-sm text-slate-500">The page hit an unexpected problem. Reloading usually fixes it.</p>
         <button
           onClick={() => window.location.reload()}

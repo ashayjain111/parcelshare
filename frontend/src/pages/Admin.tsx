@@ -15,7 +15,7 @@ export default function Admin() {
       <PageTitle title="Admin" sub="Moderation, disputes and platform health." />
       <div className="mb-4 flex flex-wrap gap-1">
         {TABS.map((t) => (
-          <button key={t} onClick={() => setTab(t)} className={`cursor-pointer rounded-lg px-3.5 py-1.5 text-sm font-medium transition ${tab === t ? 'bg-gradient-to-r from-indigo-500 to-cyan-400 text-white shadow-[0_6px_20px_-6px_rgba(197,143,56,0.9)]' : 'border border-white/10 bg-white/[0.04] text-slate-600 hover:bg-white/10'}`}>{t}</button>
+          <button key={t} onClick={() => setTab(t)} className={`cursor-pointer rounded-lg px-3.5 py-1.5 text-sm font-medium transition ${tab === t ? 'bg-gradient-to-r from-indigo-500 to-cyan-400 text-white shadow-[0_6px_20px_-6px_rgba(37,99,235,0.9)]' : 'border border-slate-900/10 bg-slate-900/[0.04] text-slate-600 hover:bg-slate-900/10'}`}>{t}</button>
         ))}
       </div>
       {tab === 'Overview' && <Overview />}

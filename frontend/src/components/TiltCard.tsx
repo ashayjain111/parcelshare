@@ -29,12 +29,12 @@ export default function TiltCard({ children, className = '', max = 5 }: { childr
       ref={ref}
       onPointerMove={move}
       onPointerLeave={leave}
-      className={`glass group relative rounded-2xl p-5 transition-[transform,border-color] duration-300 ease-out will-change-transform hover:border-white/25 ${className}`}
+      className={`glass group relative rounded-2xl p-5 transition-[transform,border-color] duration-300 ease-out will-change-transform hover:border-slate-900/25 ${className}`}
     >
       <span
         aria-hidden
         className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ background: 'radial-gradient(360px circle at var(--lx,50%) var(--ly,0%), rgb(228 189 114 / 0.14), transparent 60%)' }}
+        style={{ background: 'radial-gradient(360px circle at var(--lx,50%) var(--ly,0%), rgb(59 130 246 / 0.13), transparent 60%)' }}
       />
       <div className="relative">{children}</div>
     </div>

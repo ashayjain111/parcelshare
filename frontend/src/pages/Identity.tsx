@@ -39,7 +39,7 @@ export function IdentityCallback() {
         {!result && !error && <Loading />}
         {error ? (
           <>
-            <h1 className="font-display text-2xl font-semibold text-white">Verification did not complete</h1>
+            <h1 className="font-display text-2xl font-semibold text-slate-900">Verification did not complete</h1>
             <div className="mt-4 text-left"><ErrorBox error={error} /></div>
             <Link to="/profile" className="mt-5 inline-block text-sm text-indigo-600 hover:underline">Back to your profile</Link>
           </>
@@ -47,7 +47,7 @@ export function IdentityCallback() {
         {result && (
           <>
             <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 text-2xl text-white shadow-[0_0_30px_4px_rgba(74,222,159,0.5)]">✓</div>
-            <h1 className="mt-4 font-display text-2xl font-semibold text-white">Identity verified</h1>
+            <h1 className="mt-4 font-display text-2xl font-semibold text-slate-900">Identity verified</h1>
             {result.travellerVerification === 'APPROVED' ? (
               <p className="mt-2 text-sm text-slate-500">You are now a verified traveller and can post trips straight away.</p>
             ) : (
@@ -78,7 +78,7 @@ export function DigiLockerDemo() {
         <p className="mb-4 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-medium text-amber-800">
           DEMO SCREEN. This is not the real DigiLocker. It only exists so the flow can be shown without government credentials.
         </p>
-        <h1 className="font-display text-2xl font-semibold text-white">ParcelShare wants to verify who you are</h1>
+        <h1 className="font-display text-2xl font-semibold text-slate-900">ParcelShare wants to verify who you are</h1>
         <p className="mt-2 text-sm text-slate-500">
           In the real flow you sign in to DigiLocker and choose to share your verified name. ParcelShare never receives your
           Aadhaar number or any document.

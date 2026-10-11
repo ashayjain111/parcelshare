@@ -31,7 +31,7 @@ export default function Receive() {
   if (q.error || !q.data) {
     return (
       <Card className="mx-auto max-w-md text-center">
-        <h1 className="font-display text-2xl font-semibold text-white">This link is not valid</h1>
+        <h1 className="font-display text-2xl font-semibold text-slate-900">This link is not valid</h1>
         <p className="mt-2 text-sm text-slate-500">It may have been mistyped or copied incompletely. Ask the sender to share the link again.</p>
         <Link to="/" className="mt-5 inline-block text-sm text-indigo-600 hover:underline">Go to ParcelShare</Link>
       </Card>

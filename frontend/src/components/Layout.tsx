@@ -12,7 +12,7 @@ import { Toaster } from './Toast'
 import { Loading } from './ui'
 
 const link = ({ isActive }: { isActive: boolean }) =>
-  `rounded-lg px-3 py-1.5 text-sm font-medium transition ${isActive ? 'bg-white/10 text-slate-900' : 'text-slate-500 hover:text-slate-900'}`
+  `rounded-lg px-3 py-1.5 text-sm font-medium transition ${isActive ? 'bg-slate-900/10 text-slate-900' : 'text-slate-500 hover:text-slate-900'}`
 
 export default function Layout() {
   const { user, logout } = useAuth()
@@ -52,7 +52,7 @@ export default function Layout() {
     <MotionConfig reducedMotion={motion === 'calm' ? 'always' : 'never'}>
     <div className="relative z-[1] min-h-screen">
       {!landing && (
-        <a href="#main" className="sr-only z-[80] rounded-lg bg-white px-4 py-2 text-sm font-semibold text-[#0a0908] focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
+        <a href="#main" className="sr-only z-[80] rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
           Skip to content
         </a>
       )}
@@ -88,7 +88,7 @@ export default function Layout() {
             {user ? (
               <>
                 <NotificationBell />
-                <NavLink to="/profile" className="hidden items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] py-1 pl-1 pr-3 text-sm font-medium text-slate-800 transition hover:bg-white/10 sm:flex">
+                <NavLink to="/profile" className="hidden items-center gap-2 rounded-xl border border-slate-900/10 bg-slate-900/[0.04] py-1 pl-1 pr-3 text-sm font-medium text-slate-800 transition hover:bg-slate-900/10 sm:flex">
                   <span className="grid h-7 w-7 place-items-center rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-400 text-xs font-bold text-white">
                     {user.fullName.trim()[0]?.toUpperCase()}
                   </span>
@@ -101,7 +101,7 @@ export default function Layout() {
             ) : (
               <>
                 <Link to="/login" className="rounded-lg px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:text-slate-900">Log in</Link>
-                <Link to="/register" className="rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-400 px-4 py-2 text-sm font-semibold text-white shadow-[0_6px_24px_-6px_rgba(197,143,56,0.9)] transition hover:brightness-110">
+                <Link to="/register" className="rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-400 px-4 py-2 text-sm font-semibold text-white shadow-[0_6px_24px_-6px_rgba(37,99,235,0.9)] transition hover:brightness-110">
                   Get started
                 </Link>
               </>
@@ -111,7 +111,7 @@ export default function Layout() {
                 aria-label="Menu"
                 aria-expanded={menu}
                 onClick={() => setMenuPath(menu ? null : loc.pathname)}
-                className="grid h-9 w-9 cursor-pointer place-items-center rounded-xl border border-white/10 bg-white/[0.04] lg:hidden"
+                className="grid h-9 w-9 cursor-pointer place-items-center rounded-xl border border-slate-900/10 bg-slate-900/[0.04] lg:hidden"
               >
                 <span className="relative block h-3 w-4">
                   <span className={`absolute left-0 top-0 h-[1.5px] w-4 bg-slate-800 transition ${menu ? 'translate-y-[5px] rotate-45' : ''}`} />
@@ -124,7 +124,7 @@ export default function Layout() {
         </div>
 
         {user && menu && (
-          <div className="glass mx-auto mt-2 max-w-6xl rounded-2xl bg-[#14110d]/95 p-2 lg:hidden">
+          <div className="glass mx-auto mt-2 max-w-6xl rounded-2xl bg-white/95 p-2 lg:hidden">
             {items.map(([to, label, end]) => <NavLink key={to} to={to} end={end} className={({ isActive }) => `block ${link({ isActive })} py-2.5`}>{label}</NavLink>)}
             {user.role === 'ADMIN' && <NavLink to="/admin" className={({ isActive }) => `block ${link({ isActive })} py-2.5`}>Admin</NavLink>}
             <NavLink to="/profile" className={({ isActive }) => `block ${link({ isActive })} py-2.5`}>Profile</NavLink>
@@ -159,11 +159,11 @@ export default function Layout() {
         aria-pressed={motion === 'full'}
         className="glass fixed bottom-4 right-4 z-50 flex cursor-pointer items-center gap-2 rounded-full px-3.5 py-2 text-xs font-medium text-slate-700 transition hover:text-slate-900"
       >
-        <span className={`h-2 w-2 rounded-full ${motion === 'full' ? 'bg-cyan-400 shadow-[0_0_10px_2px_rgba(241,212,154,0.8)]' : 'bg-slate-400'}`} />
+        <span className={`h-2 w-2 rounded-full ${motion === 'full' ? 'bg-cyan-400 shadow-[0_0_10px_2px_rgba(56,189,248,0.8)]' : 'bg-slate-400'}`} />
         {motion === 'full' ? 'Full motion' : 'Calm motion'}
       </button>
 
-      <footer className="relative z-[1] mx-auto max-w-6xl border-t border-white/10 px-4 py-8 text-center text-xs text-slate-500">
+      <footer className="relative z-[1] mx-auto max-w-6xl border-t border-slate-900/10 px-4 py-8 text-center text-xs text-slate-500">
         <Link to="/prohibited" className="transition hover:text-slate-900">What you can send</Link>
         <span className="mx-2">·</span>
         <Link to="/terms" className="transition hover:text-slate-900">Terms of use</Link>

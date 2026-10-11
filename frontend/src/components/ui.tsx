@@ -22,12 +22,12 @@ export function PageTitle({ title, sub, right }: { title: string; sub?: string; 
 type Variant = 'primary' | 'secondary' | 'danger' | 'ghost'
 const VARIANTS: Record<Variant, string> = {
   primary:
-    'btn-shine bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 bg-[length:200%_auto] font-semibold text-[#1b1408] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_10px_24px_-10px_rgba(197,143,56,0.8)] hover:bg-right hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_14px_30px_-10px_rgba(197,143,56,0.95)] disabled:opacity-40 disabled:shadow-none',
+    'btn-shine bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 bg-[length:200%_auto] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_10px_24px_-10px_rgba(37,99,235,0.8)] hover:bg-right hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_14px_30px_-10px_rgba(37,99,235,0.95)] disabled:opacity-40 disabled:shadow-none',
   secondary:
-    'border border-white/12 bg-white/[0.05] text-slate-800 hover:border-white/25 hover:bg-white/[0.1] disabled:text-slate-400',
+    'border border-slate-900/12 bg-slate-900/[0.05] text-slate-800 hover:border-slate-900/25 hover:bg-slate-900/[0.1] disabled:text-slate-400',
   danger:
     'bg-gradient-to-r from-red-500 to-rose-500 text-white shadow-[0_8px_30px_-10px_rgba(244,63,94,0.9)] hover:brightness-110 disabled:opacity-40 disabled:shadow-none',
-  ghost: 'text-indigo-600 hover:bg-white/[0.06]',
+  ghost: 'text-indigo-600 hover:bg-slate-900/[0.06]',
 }
 
 export function Button({
@@ -73,7 +73,7 @@ export function Loading() {
   return (
     <div className="flex flex-col items-center justify-center gap-3 py-14 text-sm text-slate-500" role="status">
       <div className="flex items-center gap-3">
-        <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/10 border-t-indigo-500" />
+        <span className="h-5 w-5 animate-spin rounded-full border-2 border-slate-900/10 border-t-indigo-500" />
         Loading…
       </div>
       {slow && <p className="max-w-xs text-center text-xs text-slate-400">Still working. The server may be waking up after a quiet spell, which can take up to a minute.</p>}
@@ -102,7 +102,7 @@ export function ListSkeleton({ rows = 3 }: { rows?: number }) {
 
 export function Empty({ children }: { children: ReactNode }) {
   return (
-    <p className="rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-6 py-12 text-center text-sm text-slate-500">
+    <p className="rounded-2xl border border-dashed border-slate-900/15 bg-slate-900/[0.02] px-6 py-12 text-center text-sm text-slate-500">
       {children}
     </p>
   )
@@ -149,11 +149,11 @@ export function Person({ u, role }: { u: UserSummary; role?: string }) {
 
 export function Timeline({ events }: { events: EventView[] }) {
   return (
-    <ol className="relative ml-2 border-l border-white/10">
+    <ol className="relative ml-2 border-l border-slate-900/10">
       {events.map((e, i) => (
         <li key={e.id} className="mb-5 ml-5 last:mb-0">
           <span
-            className={`absolute -left-[7px] mt-1.5 h-3 w-3 rounded-full border-2 border-[#14110d] ${i === events.length - 1 ? 'bg-cyan-400 shadow-[0_0_14px_3px_rgba(241,212,154,0.7)]' : 'bg-indigo-500 shadow-[0_0_10px_1px_rgba(197,143,56,0.6)]'}`}
+            className={`absolute -left-[7px] mt-1.5 h-3 w-3 rounded-full border-2 border-white ${i === events.length - 1 ? 'bg-cyan-400 shadow-[0_0_14px_3px_rgba(56,189,248,0.7)]' : 'bg-indigo-500 shadow-[0_0_10px_1px_rgba(37,99,235,0.6)]'}`}
           />
           <p className="text-sm font-medium text-slate-900">{EVENT_LABELS[e.type] ?? e.type}</p>
           <p className="mt-0.5 break-words text-xs text-slate-500">

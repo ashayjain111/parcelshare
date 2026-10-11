@@ -29,7 +29,7 @@ export default function ScrollProgress() {
     <div aria-hidden className="pointer-events-none fixed inset-x-0 top-0 z-[65] h-[2px]">
       <div
         ref={bar}
-        className="h-full origin-left scale-x-0 bg-gradient-to-r from-indigo-500 via-violet-400 to-cyan-300 shadow-[0_0_12px_1px_rgba(241,212,154,0.7)]"
+        className="h-full origin-left scale-x-0 bg-gradient-to-r from-indigo-500 via-violet-400 to-cyan-300 shadow-[0_0_12px_1px_rgba(56,189,248,0.7)]"
       />
     </div>
   )

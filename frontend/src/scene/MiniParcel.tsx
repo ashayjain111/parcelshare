@@ -1,5 +1,4 @@
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Bloom, EffectComposer } from '@react-three/postprocessing'
 import { useRef } from 'react'
 import type * as THREE from 'three'
 import { Dust, ParcelModel, Studio } from './parts'
@@ -17,16 +16,12 @@ function Spinner() {
 /** A small transparent canvas with the hero parcel floating in glow-dust, used beside the login and sign-up forms. */
 export default function MiniParcel() {
   return (
-    <Canvas dpr={[1, 2]} camera={{ fov: 40, position: [0, 0.4, 5.4] }} gl={{ antialias: true }}>
-      <color attach="background" args={['#0a0908']} />
-      <ambientLight intensity={0.4} />
-      <directionalLight position={[3, 5, 4]} intensity={1.2} color="#ffe9c4" />
+    <Canvas dpr={[1, 2]} camera={{ fov: 40, position: [0, 0.4, 5.4] }} gl={{ antialias: true, alpha: true }}>
+      <ambientLight intensity={0.9} />
+      <directionalLight position={[3, 5, 4]} intensity={1.5} color="#ffffff" />
       <Studio />
       <Dust count={420} box={[-5, 5, -3, 3, -4, 2]} size={0.03} />
       <Spinner />
-      <EffectComposer multisampling={4}>
-        <Bloom intensity={0.5} luminanceThreshold={0.7} luminanceSmoothing={0.12} mipmapBlur radius={0.4} />
-      </EffectComposer>
     </Canvas>
   )
 }

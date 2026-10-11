@@ -28,11 +28,11 @@ function AuthShell({ title, sub, children, footer }: { title: string; sub: strin
         )}
       </div>
       <div className="hidden text-center lg:col-start-1 lg:row-start-2 lg:block">
-        <p className="font-display text-2xl font-semibold text-white">Send it with someone already going there.</p>
+        <p className="font-display text-2xl font-semibold text-slate-900">Send it with someone already going there.</p>
         <p className="mt-1 text-sm text-slate-500">Verified travellers. Payment held until delivery.</p>
       </div>
       <div className="glass glow-border rounded-3xl p-7 sm:p-9 lg:col-start-2 lg:row-start-1">
-        <h1 className="text-3xl font-semibold tracking-tight text-white">{title}</h1>
+        <h1 className="text-3xl font-semibold tracking-tight text-slate-900">{title}</h1>
         <p className="mt-1.5 text-sm text-slate-500">{sub}</p>
         <div className="mt-7">{children}</div>
         <p className="mt-6 text-center text-sm text-slate-500">{footer}</p>

@@ -18,9 +18,9 @@ export default function ProgressTrack({ status }: { status: string }) {
   return (
     <div className="mb-6">
       <div className="relative mx-3 mt-2">
-        <div className="absolute left-0 right-0 top-[7px] h-[2px] rounded-full bg-white/10" />
+        <div className="absolute left-0 right-0 top-[7px] h-[2px] rounded-full bg-slate-900/10" />
         <div
-          className="absolute left-0 top-[7px] h-[2px] rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 shadow-[0_0_14px_2px_rgba(241,212,154,0.55)] transition-[width] duration-1000 ease-out"
+          className="absolute left-0 top-[7px] h-[2px] rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 shadow-[0_0_14px_2px_rgba(56,189,248,0.55)] transition-[width] duration-1000 ease-out"
           style={{ width: `${pct}%` }}
         />
         <ol className="relative flex justify-between">
@@ -32,8 +32,8 @@ export default function ProgressTrack({ status }: { status: string }) {
                 <span
                   className={`h-4 w-4 rounded-full border-2 transition-all duration-700 ${
                     reached
-                      ? 'border-cyan-300 bg-cyan-400 shadow-[0_0_16px_3px_rgba(241,212,154,0.65)]'
-                      : 'border-white/20 bg-[#14110d]'
+                      ? 'border-cyan-300 bg-cyan-400 shadow-[0_0_16px_3px_rgba(56,189,248,0.65)]'
+                      : 'border-slate-900/20 bg-white'
                   } ${current ? 'scale-125' : ''}`}
                 />
                 <span className={`mt-2 whitespace-nowrap text-[11px] font-medium ${reached ? 'text-slate-800' : 'text-slate-400'}`}>

@@ -28,7 +28,7 @@ function Words({ text, className = '', start = 0 }: { text: string; className?: 
   )
 }
 
-const shadow = '[text-shadow:0_2px_40px_rgb(5_6_15/0.95)]'
+const shadow = '[text-shadow:0_1px_28px_rgb(255_255_255/0.95)]'
 
 function Section({ id, stage, side = 'left', children, className = '' }: { id?: string; stage: number; side?: 'left' | 'right'; children: ReactNode; className?: string }) {
   return (
@@ -49,7 +49,7 @@ function Eyebrow({ n, children }: { n: string; children: ReactNode }) {
 }
 
 function Heading({ children }: { children: ReactNode }) {
-  return <h2 className={`font-display text-4xl font-medium leading-[1.04] tracking-[-0.022em] text-white sm:text-5xl lg:text-[3.6rem] ${shadow}`}>{children}</h2>
+  return <h2 className={`font-display text-4xl font-medium leading-[1.04] tracking-[-0.022em] text-slate-900 sm:text-5xl lg:text-[3.6rem] ${shadow}`}>{children}</h2>
 }
 
 function Lead({ children }: { children: ReactNode }) {
@@ -62,7 +62,7 @@ function ScoreBar({ label, value, max }: { label: string; value: number; max: nu
   return (
     <div className="flex items-center gap-3 text-xs">
       <span className="w-20 text-slate-500">{label}</span>
-      <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">
+      <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-900/10">
         <span className="block h-full rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400" style={{ width: `${(value / max) * 100}%` }} />
       </span>
       <span className="w-6 text-right tabular-nums text-slate-700">{value}</span>
@@ -75,16 +75,16 @@ function MatchCard() {
     <TiltCard className="w-full max-w-md">
       <div className="flex items-start justify-between">
         <div>
-          <p className="font-display text-lg font-semibold text-white">Noida → Lucknow</p>
+          <p className="font-display text-lg font-semibold text-slate-900">Noida → Lucknow</p>
           <p className="text-xs text-slate-500">Train · 8 Oct, 10:15 · 3 kg free</p>
         </div>
         <div className="relative grid h-14 w-14 place-items-center">
           <svg viewBox="0 0 36 36" className="absolute inset-0 -rotate-90">
-            <circle cx="18" cy="18" r="15.5" fill="none" stroke="rgb(255 255 255 / .1)" strokeWidth="2.5" />
+            <circle cx="18" cy="18" r="15.5" fill="none" stroke="rgb(11 27 58 / .1)" strokeWidth="2.5" />
             <circle cx="18" cy="18" r="15.5" fill="none" stroke="url(#sg)" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="97.4" strokeDashoffset="10.7" />
-            <defs><linearGradient id="sg"><stop stopColor="#e0a64d" /><stop offset="1" stopColor="#ffd58a" /></linearGradient></defs>
+            <defs><linearGradient id="sg"><stop stopColor="#2563eb" /><stop offset="1" stopColor="#38bdf8" /></linearGradient></defs>
           </svg>
-          <span className="font-display text-lg font-semibold text-white">89</span>
+          <span className="font-display text-lg font-semibold text-slate-900">89</span>
         </div>
       </div>
       <p className="mt-3 text-sm text-slate-700">Priya S. <span className="text-xs text-slate-500">★ 4.4 · 97% reliable</span> <span className="text-xs text-emerald-600">✓ verified</span></p>
@@ -95,8 +95,8 @@ function MatchCard() {
         <ScoreBar label="Reliability" value={15} max={15} />
         <ScoreBar label="Price" value={10} max={10} />
       </div>
-      <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4">
-        <span className="font-display text-2xl font-semibold text-white">₹80</span>
+      <div className="mt-5 flex items-center justify-between border-t border-slate-900/10 pt-4">
+        <span className="font-display text-2xl font-semibold text-slate-900">₹80</span>
         <span className="rounded-lg bg-gradient-to-r from-indigo-500 to-cyan-400 px-4 py-2 text-sm font-semibold text-white">Book &amp; pay</span>
       </div>
     </TiltCard>
@@ -109,7 +109,7 @@ function HandoverCard() {
       <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Handover code · single use · 15 min</p>
       <div className="mt-3 flex gap-2">
         {'048213'.split('').map((d, i) => (
-          <span key={i} className="grid h-14 flex-1 place-items-center rounded-xl border border-cyan-300/30 bg-cyan-400/10 font-display text-3xl font-semibold text-cyan-200 shadow-[0_0_24px_-6px_rgba(241,212,154,0.7)]">{d}</span>
+          <span key={i} className="grid h-14 flex-1 place-items-center rounded-xl border border-cyan-300/30 bg-cyan-400/10 font-display text-3xl font-semibold text-cyan-200 shadow-[0_0_24px_-6px_rgba(56,189,248,0.7)]">{d}</span>
         ))}
       </div>
       <ul className="mt-5 space-y-2.5 text-sm">
@@ -139,11 +139,11 @@ function ChainCard() {
           <li key={t} className="flex items-center gap-3">
             <span className="relative grid h-7 w-7 shrink-0 place-items-center rounded-lg border border-indigo-300/40 bg-indigo-400/10 text-[10px] font-bold text-indigo-300">{i + 1}</span>
             <span className="min-w-0 flex-1 text-sm text-slate-800">{t}</span>
-            <code className="rounded-md bg-white/5 px-2 py-0.5 font-mono text-[11px] text-cyan-300">{h}</code>
+            <code className="rounded-md bg-slate-900/5 px-2 py-0.5 font-mono text-[11px] text-cyan-300">{h}</code>
           </li>
         ))}
       </ol>
-      <p className="mt-5 flex items-center gap-2 border-t border-white/10 pt-4 text-sm text-emerald-300"><span>✓</span> History intact. 5 events, hash chain verified</p>
+      <p className="mt-5 flex items-center gap-2 border-t border-slate-900/10 pt-4 text-sm text-emerald-300"><span>✓</span> History intact. 5 events, hash chain verified</p>
     </TiltCard>
   )
 }
@@ -153,13 +153,13 @@ function PayCard() {
     <TiltCard className="w-full max-w-md">
       <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Payment</p>
       <div className="mt-3 space-y-2.5 text-sm">
-        <div className="flex justify-between text-slate-700"><span>Paid by sender</span><span className="font-display text-lg text-white">₹100</span></div>
+        <div className="flex justify-between text-slate-700"><span>Paid by sender</span><span className="font-display text-lg text-slate-900">₹100</span></div>
         <div className="flex justify-between text-slate-500"><span>Platform fee</span><span>− ₹10</span></div>
-        <div className="flex justify-between border-t border-white/10 pt-2.5 text-slate-800"><span>Traveller earns</span><span className="font-display text-lg text-emerald-300">₹90</span></div>
+        <div className="flex justify-between border-t border-slate-900/10 pt-2.5 text-slate-800"><span>Traveller earns</span><span className="font-display text-lg text-emerald-300">₹90</span></div>
       </div>
       <div className="mt-5 grid grid-cols-3 gap-2 text-center text-[11px]">
         {[['Held', 'on booking'], ['48 h', 'dispute window'], ['Released', 'on delivery']].map(([a, b], i) => (
-          <div key={a} className={`rounded-xl border px-2 py-2.5 ${i === 2 ? 'border-emerald-300/30 bg-emerald-400/10 text-emerald-200' : 'border-white/10 bg-white/[0.03] text-slate-700'}`}>
+          <div key={a} className={`rounded-xl border px-2 py-2.5 ${i === 2 ? 'border-emerald-300/30 bg-emerald-400/10 text-emerald-200' : 'border-slate-900/10 bg-slate-900/[0.03] text-slate-700'}`}>
             <p className="font-display text-sm font-semibold">{a}</p><p className="mt-0.5 text-slate-500">{b}</p>
           </div>
         ))}
@@ -248,21 +248,15 @@ function Landing() {
 
       <div className="relative z-10">
         {/* 00 hero */}
-        <Section stage={0} className={`min-h-[100svh] ${mobile ? 'items-end pb-16' : ''}`}>
+        <Section stage={0} className={`min-h-[100svh] ${mobile ? 'items-end pb-16' : 'pb-44 pt-28'}`}>
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgb(255_244_225/0.045)_1px,transparent_1px),linear-gradient(90deg,rgb(255_244_225/0.045)_1px,transparent_1px)] bg-[size:84px_84px] [mask-image:radial-gradient(ellipse_70%_60%_at_30%_50%,black,transparent)]"
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgb(37_99_235/0.07)_1px,transparent_1px),linear-gradient(90deg,rgb(37_99_235/0.07)_1px,transparent_1px)] bg-[size:84px_84px] [mask-image:radial-gradient(ellipse_70%_60%_at_30%_50%,black,transparent)]"
           />
           <div className="relative max-w-xl">
-            <Reveal>
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.05] px-3.5 py-1.5 text-xs font-medium text-slate-700 backdrop-blur">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cyan-400 shadow-[0_0_10px_2px_rgba(241,212,154,0.8)]" />
-                Peer-to-peer parcel sharing
-              </span>
-            </Reveal>
             <Reveal delay={90}>
-              <h1 className={`mt-6 font-display text-5xl font-medium leading-[1.0] tracking-[-0.025em] text-white sm:text-6xl lg:text-[5.4rem] ${shadow}`}>
-                <Words text="Send it with someone" /> <Words text="already going there." className="text-gradient italic" start={4} />
+              <h1 className={`font-display text-5xl font-semibold leading-[1.0] tracking-[-0.025em] text-slate-900 sm:text-6xl lg:text-[5.4rem] ${shadow}`}>
+                <Words text="Send it with someone" /> <Words text="already going there." className="text-gradient" start={4} />
               </h1>
             </Reveal>
             <Reveal delay={180}>
@@ -273,25 +267,39 @@ function Landing() {
             </Reveal>
             <Reveal delay={270} className="mt-9 flex flex-wrap items-center gap-3">
               <Magnetic>
-                <Link to="/register" className="btn-shine inline-block rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_10px_40px_-8px_rgba(197,143,56,0.95)] transition hover:brightness-110 active:scale-[0.98]">
+                <Link to="/register" className="btn-shine inline-block rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_10px_40px_-8px_rgba(37,99,235,0.95)] transition hover:brightness-110 active:scale-[0.98]">
                   Get started free
                 </Link>
               </Magnetic>
               <Magnetic strength={0.18}>
-                <Link to="/login" className="inline-block rounded-2xl border border-white/15 bg-white/[0.05] px-7 py-3.5 text-sm font-semibold text-slate-900 backdrop-blur transition hover:bg-white/10">
+                <Link to="/login" className="inline-block rounded-2xl border border-slate-900/15 bg-slate-900/[0.05] px-7 py-3.5 text-sm font-semibold text-slate-900 backdrop-blur transition hover:bg-slate-900/10">
                   Log in
                 </Link>
               </Magnetic>
             </Reveal>
-            <Reveal delay={360} className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-500">
-              {['No warehouses or couriers', 'Payment held until delivery', 'Tamper-evident history'].map((t) => (
-                <span key={t} className="flex items-center gap-2"><span className="text-cyan-300">◆</span>{t}</span>
-              ))}
-            </Reveal>
           </div>
-          <a href="#match" aria-label="Scroll to explore" className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-[11px] uppercase tracking-[0.25em] text-slate-500 md:flex">
-            Scroll
-            <span className="relative h-10 w-px overflow-hidden bg-white/10"><span className="absolute inset-x-0 top-0 h-4 animate-[fade-up_1.6s_ease-in-out_infinite] bg-gradient-to-b from-cyan-300 to-transparent" /></span>
+          <div className="pointer-events-none absolute right-5 top-[22%] hidden w-64 animate-float xl:block xl:right-[5%]">
+            <div className="glass rounded-2xl p-4">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-500">Best match</p>
+              <div className="mt-2 flex items-center justify-between">
+                <div>
+                  <p className="font-display text-base font-semibold text-slate-900">Delhi → Lucknow</p>
+                  <p className="text-xs text-slate-500">Priya S. · ★ 4.4 · verified</p>
+                </div>
+                <span className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-indigo-500 to-cyan-400 font-display text-sm font-semibold">89</span>
+              </div>
+            </div>
+          </div>
+          <a href="#match" aria-label="See how it works" className="glass absolute inset-x-5 bottom-6 hidden grid-cols-3 gap-px overflow-hidden rounded-2xl text-left transition hover:shadow-[0_0_0_1px_rgba(37,99,235,0.35),0_24px_48px_-24px_rgba(30,64,175,0.4)] md:grid">
+            {[['01', 'Post or find a trip', 'Travellers list journeys they are already making.'], ['02', 'Hand over with a code', 'A one-time code and photos confirm the exchange.'], ['03', 'Paid on delivery', 'Payment is held, then released once it arrives.']].map(([n, t, d]) => (
+              <span key={n} className="flex items-start gap-4 px-6 py-5">
+                <span className="numeral text-3xl leading-none">{n}</span>
+                <span>
+                  <span className="block font-display text-base font-semibold text-slate-900">{t}</span>
+                  <span className="mt-1 block text-xs leading-relaxed text-slate-500">{d}</span>
+                </span>
+              </span>
+            ))}
           </a>
         </Section>
 
@@ -347,8 +355,8 @@ function Landing() {
             {FEATURES.map(([t, d, icon], i) => (
               <Reveal key={t} delay={(i % 3) * 90}>
                 <TiltCard className="h-full">
-                  <span className="mb-4 grid h-11 w-11 place-items-center rounded-xl border border-white/10 bg-gradient-to-br from-indigo-500/25 to-cyan-400/15 text-cyan-200"><Icon d={icon} /></span>
-                  <h3 className="font-display text-lg font-semibold text-white">{t}</h3>
+                  <span className="mb-4 grid h-11 w-11 place-items-center rounded-xl border border-slate-900/10 bg-gradient-to-br from-indigo-500/25 to-cyan-400/15 text-cyan-200"><Icon d={icon} /></span>
+                  <h3 className="font-display text-lg font-semibold text-slate-900">{t}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-slate-500">{d}</p>
                 </TiltCard>
               </Reveal>
@@ -363,9 +371,9 @@ function Landing() {
         </section>
 
         {/* routes marquee */}
-        <section aria-label="Routes you can travel today" className="relative overflow-hidden border-y border-white/10 bg-white/[0.02] py-7 backdrop-blur-sm">
+        <section aria-label="Routes you can travel today" className="relative overflow-hidden border-y border-slate-900/10 bg-slate-900/[0.02] py-7 backdrop-blur-sm">
           <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-400">Routes you can travel today</p>
-          <div className="marquee flex w-max gap-12 whitespace-nowrap font-display text-3xl font-normal italic text-slate-500">
+          <div className="marquee flex w-max gap-12 whitespace-nowrap font-display text-3xl font-normal text-slate-400">
             {[...CITIES, ...CITIES].map((c, i) => (
               <span key={i} className="flex items-center gap-12">{c}<span className="text-cyan-300">→</span></span>
             ))}
@@ -374,11 +382,11 @@ function Landing() {
 
         {/* final CTA */}
         <section data-stage={1} className="mx-auto flex min-h-[90svh] max-w-4xl flex-col items-center justify-center px-5 py-24 text-center">
-          <Reveal><h2 className={`font-display text-5xl font-semibold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl ${shadow}`}>Your next parcel is <span className="text-gradient italic">already travelling.</span></h2></Reveal>
+          <Reveal><h2 className={`font-display text-5xl font-semibold leading-[1.02] tracking-tight text-slate-900 sm:text-6xl lg:text-7xl ${shadow}`}>Your next parcel is <span className="text-gradient">already travelling.</span></h2></Reveal>
           <Reveal delay={120}><p className={`mx-auto mt-6 max-w-xl text-base text-slate-600 sm:text-lg ${shadow}`}>Sign up in a minute. Post a trip to earn on a journey you were making anyway, or send something small today.</p></Reveal>
           <Reveal delay={220} className="mt-10 flex flex-wrap justify-center gap-3">
-            <Magnetic><Link to="/register" className="btn-shine inline-block rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-8 py-4 text-sm font-semibold text-white shadow-[0_10px_50px_-8px_rgba(197,143,56,1)] transition hover:brightness-110 active:scale-[0.98]">Create your account</Link></Magnetic>
-            <Magnetic strength={0.18}><Link to="/login" className="inline-block rounded-2xl border border-white/15 bg-white/[0.05] px-8 py-4 text-sm font-semibold text-slate-900 backdrop-blur transition hover:bg-white/10">Log in</Link></Magnetic>
+            <Magnetic><Link to="/register" className="btn-shine inline-block rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-8 py-4 text-sm font-semibold text-white shadow-[0_10px_50px_-8px_rgba(37,99,235,1)] transition hover:brightness-110 active:scale-[0.98]">Create your account</Link></Magnetic>
+            <Magnetic strength={0.18}><Link to="/login" className="inline-block rounded-2xl border border-slate-900/15 bg-slate-900/[0.05] px-8 py-4 text-sm font-semibold text-slate-900 backdrop-blur transition hover:bg-slate-900/10">Log in</Link></Magnetic>
           </Reveal>
         </section>
       </div>

@@ -10,7 +10,7 @@ import type { Review } from '../lib'
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <div className="text-center">
-      <p className="font-display text-3xl font-semibold text-white">{value}</p>
+      <p className="font-display text-3xl font-semibold text-slate-900">{value}</p>
       <p className="mt-1 text-xs uppercase tracking-wider text-slate-500">{label}</p>
     </div>
   )
@@ -89,7 +89,7 @@ export default function Profile() {
 
       <div className="grid gap-5 md:grid-cols-2">
         <Card>
-          <h2 className="mb-4 font-display text-lg font-semibold text-white">Your details</h2>
+          <h2 className="mb-4 font-display text-lg font-semibold text-slate-900">Your details</h2>
           <form onSubmit={onSave} className="space-y-4">
             <Field label="Full name"><input required maxLength={120} value={name} onChange={(e) => setName(e.target.value)} /></Field>
             <Field label="Phone" hint="Shared only after a booking is accepted."><input maxLength={20} value={phone} onChange={(e) => setPhone(e.target.value)} /></Field>
@@ -102,7 +102,7 @@ export default function Profile() {
         </Card>
 
         <Card>
-          <h2 className="mb-4 font-display text-lg font-semibold text-white">Change password</h2>
+          <h2 className="mb-4 font-display text-lg font-semibold text-slate-900">Change password</h2>
           <form onSubmit={onPw} className="space-y-4">
             <Field label="Current password"><input type="password" required autoComplete="current-password" value={pw.current} onChange={(e) => setPw({ ...pw, current: e.target.value })} /></Field>
             <Field label="New password" hint="At least 8 characters"><input type="password" required minLength={8} autoComplete="new-password" value={pw.next} onChange={(e) => setPw({ ...pw, next: e.target.value })} /></Field>
@@ -116,7 +116,7 @@ export default function Profile() {
       </div>
 
       <Card>
-        <h2 className="font-display text-lg font-semibold text-white">Traveller verification</h2>
+        <h2 className="font-display text-lg font-semibold text-slate-900">Traveller verification</h2>
         <p className="mt-1 text-sm text-slate-500">
           Status: <b className="text-slate-800">{user.travellerVerification}</b>. Only verified travellers can post trips.
         </p>
@@ -150,7 +150,7 @@ export default function Profile() {
       </Card>
 
       <Card>
-        <h2 className="font-display text-lg font-semibold text-white">Your data</h2>
+        <h2 className="font-display text-lg font-semibold text-slate-900">Your data</h2>
         <p className="mt-1 text-sm text-slate-500">
           Download a copy of everything we hold about you, or delete your account. Deleting removes your name, email, phone and
           notifications. Bookings other people took part in stay in their history, but no longer identify you.
@@ -170,7 +170,7 @@ export default function Profile() {
       </Card>
 
       <div>
-        <h2 className="mb-3 font-display text-lg font-semibold text-white">What people said about you</h2>
+        <h2 className="mb-3 font-display text-lg font-semibold text-slate-900">What people said about you</h2>
         {!reviews.data?.length ? (
           <Empty>No reviews yet. They appear after your first completed booking.</Empty>
         ) : (
