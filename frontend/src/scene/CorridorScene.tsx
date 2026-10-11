@@ -209,7 +209,7 @@ function HandoverStage({ groupRef }: { groupRef: RefObject<THREE.Group | null> }
           <meshBasicMaterial color="#1d4ed8" toneMapped={false} transparent opacity={0.5} />
         </instancedMesh>
         <mesh ref={beam} position={[0, 0, 0.06]}>
-          <planeGeometry args={[1.85, 0.04]} />
+          <planeGeometry args={[1.5, 0.018]} />
           <meshBasicMaterial color={GLOW_CYAN} toneMapped={false} transparent />
         </mesh>
       </group>
@@ -284,7 +284,7 @@ function ArrivalStage({ groupRef, tRef, count }: { groupRef: RefObject<THREE.Gro
       if (!r) return
       const k = (time * 0.28 * (0.25 + 0.75 * motion.amb) + i / 4) % 1
       r.scale.setScalar(0.4 + k * 6)
-      ;(r.material as THREE.MeshBasicMaterial).opacity = (1 - k) * 0.55
+      ;(r.material as THREE.MeshBasicMaterial).opacity = (1 - k) * 0.3
     })
     const burst = sstep(0.93, 1, tRef.current)
     if (pts.current) {
@@ -301,7 +301,7 @@ function ArrivalStage({ groupRef, tRef, count }: { groupRef: RefObject<THREE.Gro
   return (
     <group ref={groupRef} position={[0, 0.2, -47]}>
       {[0, 1, 2, 3].map((i) => (
-        <mesh key={i} ref={(el) => { ripples.current[i] = el }} rotation-x={Math.PI / 2}>
+        <mesh key={i} ref={(el) => { ripples.current[i] = el }} rotation-x={0.95}>
           <ringGeometry args={[0.95, 1, 80]} />
           <meshBasicMaterial color={GLOW_CYAN} toneMapped={false} transparent side={THREE.DoubleSide} />
         </mesh>

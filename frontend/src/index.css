@@ -392,6 +392,39 @@ input[type="file"]::file-selector-button:hover {
 .stagger > *:nth-child(6) { animation-delay: 275ms; }
 .stagger > *:nth-child(n+7) { animation-delay: 330ms; }
 
+/* A dark section: re-points the navy ramp so everything inside (text, glass, borders) flips to light-on-dark. */
+.dark-zone {
+  --color-slate-50: rgb(255 255 255 / 0.04);
+  --color-slate-100: rgb(255 255 255 / 0.07);
+  --color-slate-200: rgb(255 255 255 / 0.12);
+  --color-slate-300: rgb(255 255 255 / 0.2);
+  --color-slate-400: #8fa3c7;
+  --color-slate-500: #a9b9d8;
+  --color-slate-600: #c3cfe6;
+  --color-slate-700: #d9e2f3;
+  --color-slate-800: #eaf0fb;
+  --color-slate-900: #ffffff;
+  --color-indigo-600: #8bb8ff;
+  --color-indigo-700: #b3d1ff;
+  --color-cyan-200: #e0efff;
+  --color-cyan-300: #8ec5ff;
+  color: #eaf0fb;
+}
+
+.dark-zone * {
+  text-shadow: none !important;
+}
+
+.dark-zone .numeral {
+  --nc: #9ccbff;
+}
+
+.dark-zone .glass {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.11), rgb(255 255 255 / 0.04));
+  border-color: rgb(255 255 255 / 0.16);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.04), inset 0 1px 0 rgb(255 255 255 / 0.2), 0 24px 48px -24px rgb(0 0 0 / 0.6);
+}
+
 /* Anything filled with the blue gradient carries white text. */
 .bg-gradient-to-r.to-cyan-400,
 .bg-gradient-to-br.to-cyan-400,

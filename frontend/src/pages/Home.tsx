@@ -13,7 +13,7 @@ import { webglAvailable } from '../scene/env'
 // The 3D scene is large (three.js), so it loads after the page shell and only on this screen.
 const CorridorScene = lazy(() => import('../scene/CorridorScene'))
 
-const HUES = ['bg-blue-500/15 text-blue-700', 'bg-emerald-500/15 text-emerald-700', 'bg-purple-500/15 text-purple-700', 'bg-orange-500/15 text-orange-700', 'bg-sky-500/20 text-sky-700', 'bg-rose-500/15 text-rose-700']
+const HUES = ['bg-blue-400/20 text-blue-300', 'bg-emerald-400/20 text-emerald-300', 'bg-purple-400/20 text-purple-300', 'bg-orange-400/20 text-orange-300', 'bg-sky-400/20 text-sky-300', 'bg-rose-400/20 text-rose-300']
 const DOTS = ['bg-blue-500', 'bg-orange-400', 'bg-emerald-500', 'bg-purple-500', 'bg-sky-400', 'bg-rose-400']
 const CITIES = ['Delhi NCR', 'Lucknow', 'Kanpur', 'Jaipur', 'Chandigarh', 'Dehradun', 'Agra', 'Varanasi']
 
@@ -318,7 +318,7 @@ function Landing() {
 
         {/* 01 match */}
         <Section id="match" stage={0.3} className="gap-10 lg:grid lg:grid-cols-[minmax(0,26rem)_1fr_minmax(0,25rem)]">
-          <div>
+          <div className="glass rounded-3xl p-6 sm:p-9">
             <Reveal><Eyebrow n="01">Match</Eyebrow></Reveal>
             <Reveal delay={80}><Heading>Travellers post trips. Parcels find them.</Heading></Reveal>
             <Reveal delay={160}><Lead>Hard rules decide who can carry it: route, date, capacity, verified identity. Then every candidate gets an explainable score, so you see exactly why one traveller ranks above another.</Lead></Reveal>
@@ -331,7 +331,7 @@ function Landing() {
         <Section stage={0.57} className="gap-10 lg:grid lg:grid-cols-[minmax(0,25rem)_1fr_minmax(0,26rem)]">
           <Reveal className="order-2 mt-10 flex lg:order-1 lg:mt-0"><HandoverCard /></Reveal>
           <div className="order-2 hidden lg:block" />
-          <div className="order-1 lg:order-3">
+          <div className="glass order-1 rounded-3xl p-6 sm:p-9 lg:order-3">
             <Reveal><Eyebrow n="02">Hand over</Eyebrow></Reveal>
             <Reveal delay={80}><Heading>A code. A photo. A handshake.</Heading></Reveal>
             <Reveal delay={160}><Lead>No sealed boxes and no warehouse. The traveller opens the parcel and checks it matches the description, you both add photos, and a one-time code confirms the exchange.</Lead></Reveal>
@@ -340,7 +340,7 @@ function Landing() {
 
         {/* 03 chain */}
         <Section stage={0.79} className="gap-10 lg:grid lg:grid-cols-[minmax(0,26rem)_1fr_minmax(0,25rem)]">
-          <div>
+          <div className="glass rounded-3xl p-6 sm:p-9">
             <Reveal><Eyebrow n="03">Chain of custody</Eyebrow></Reveal>
             <Reveal delay={80}><Heading>Every step, sealed into a chain.</Heading></Reveal>
             <Reveal delay={160}><Lead>Each event carries the fingerprint of the one before it, photos included. Change anything after the fact and the chain breaks, so disputes are settled on evidence, not on who shouts louder.</Lead></Reveal>
@@ -353,7 +353,7 @@ function Landing() {
         <Section stage={0.93} className="gap-10 lg:grid lg:grid-cols-[minmax(0,25rem)_1fr_minmax(0,26rem)]">
           <Reveal className="order-2 mt-10 flex lg:order-1 lg:mt-0"><PayCard /></Reveal>
           <div className="order-2 hidden lg:block" />
-          <div className="order-1 lg:order-3">
+          <div className="glass order-1 rounded-3xl p-6 sm:p-9 lg:order-3">
             <Reveal><Eyebrow n="04">Delivered, then paid</Eyebrow></Reveal>
             <Reveal delay={80}><Heading>The money moves when the parcel does.</Heading></Reveal>
             <Reveal delay={160}><Lead>Payment is held from the moment you book. It is released to the traveller after delivery, once the dispute window closes or you confirm. If something goes wrong, an admin can refund or split it.</Lead></Reveal>
@@ -361,7 +361,12 @@ function Landing() {
         </Section>
 
         {/* features */}
-        <section data-stage={1} className="mx-auto max-w-6xl px-5 py-28">
+        <section data-stage={1} className="px-3 py-10">
+          <div className="dark-zone relative mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-[#07122b] px-5 py-24 sm:px-12">
+          <div aria-hidden className="pointer-events-none absolute -left-32 -top-40 h-[28rem] w-[28rem] rounded-full bg-blue-500/45 blur-3xl" />
+          <div aria-hidden className="pointer-events-none absolute -bottom-40 right-0 h-[26rem] w-[26rem] rounded-full bg-fuchsia-500/30 blur-3xl" />
+          <div aria-hidden className="pointer-events-none absolute right-1/3 top-1/3 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl" />
+          <div className="relative mx-auto max-w-6xl">
           <Reveal><Eyebrow n="05">Why it is safe</Eyebrow></Reveal>
           <Reveal delay={80}><Heading>Built so strangers can trust each other.</Heading></Reveal>
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -381,11 +386,13 @@ function Landing() {
               <p className="mt-1 text-amber-800">Cash, jewellery, medicines, alcohol, drugs, liquids and weapons are never allowed. Travellers must look inside every parcel before accepting it. ParcelShare does not insure goods, so keep declared values low. <Link to="/prohibited" className="font-medium underline">See the full list</Link>.</p>
             </div>
           </Reveal>
+          </div>
+          </div>
         </section>
 
         {/* routes marquee */}
-        <section aria-label="Routes you can travel today" className="relative overflow-hidden border-y border-slate-900/10 bg-slate-900/[0.02] py-7 backdrop-blur-sm">
-          <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-400">Routes you can travel today</p>
+        <section aria-label="Routes you can travel today" className="relative my-14 -rotate-[1.2deg] scale-x-[1.04] overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-500 to-fuchsia-500 py-9 shadow-[0_30px_60px_-30px_rgba(79,70,229,0.7)]">
+          <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.3em] text-white/80">Routes you can travel today</p>
           <div className="marquee flex w-max gap-4 whitespace-nowrap">
             {[...CITIES, ...CITIES].map((c, i) => (
               <span key={i} className="glass flex items-center gap-2.5 rounded-full px-5 py-2 font-display text-lg font-medium text-slate-800"><span className={`h-2 w-2 rounded-full ${DOTS[i % DOTS.length]}`} />{c}</span>
@@ -393,19 +400,26 @@ function Landing() {
           </div>
           <div className="marquee-rev mt-3 flex w-max gap-4 whitespace-nowrap">
             {[...CITIES].reverse().concat([...CITIES].reverse()).map((c, i) => (
-              <span key={i} className="flex items-center gap-2.5 rounded-full border border-slate-900/10 bg-white/50 px-5 py-2 font-display text-lg font-medium text-slate-600"><span className={`h-2 w-2 rounded-full ${DOTS[(i + 3) % DOTS.length]}`} />{c}</span>
+              <span key={i} className="flex items-center gap-2.5 rounded-full border border-white/40 bg-white/15 px-5 py-2 font-display text-lg font-medium text-white"><span className={`h-2 w-2 rounded-full ${DOTS[(i + 3) % DOTS.length]}`} />{c}</span>
             ))}
           </div>
         </section>
 
         {/* final CTA */}
-        <section data-stage={1} className="mx-auto flex min-h-[90svh] max-w-4xl flex-col items-center justify-center px-5 py-24 text-center">
-          <Reveal><h2 className={`font-display text-5xl font-semibold leading-[1.02] tracking-tight text-slate-900 sm:text-6xl lg:text-7xl ${shadow}`}>Your next parcel is <span className="text-gradient">already travelling.</span></h2></Reveal>
-          <Reveal delay={120}><p className={`mx-auto mt-6 max-w-xl text-base text-slate-600 sm:text-lg ${shadow}`}>Sign up in a minute. Post a trip to earn on a journey you were making anyway, or send something small today.</p></Reveal>
-          <Reveal delay={220} className="mt-10 flex flex-wrap justify-center gap-3">
-            <Magnetic><Link to="/register" className="btn-shine inline-block rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-8 py-4 text-sm font-semibold text-white shadow-[0_10px_50px_-8px_rgba(37,99,235,1)] transition hover:brightness-110 active:scale-[0.98]">Create your account</Link></Magnetic>
-            <Magnetic strength={0.18}><Link to="/login" className="inline-block rounded-2xl border border-slate-900/15 bg-slate-900/[0.05] px-8 py-4 text-sm font-semibold text-slate-900 backdrop-blur transition hover:bg-slate-900/10">Log in</Link></Magnetic>
-          </Reveal>
+        <section data-stage={1} className="px-3 pb-16 pt-6">
+          <div className="dark-zone relative mx-auto flex max-w-6xl flex-col items-center overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-blue-600 via-indigo-600 to-fuchsia-600 px-6 py-24 text-center sm:py-32">
+            <div aria-hidden className="pointer-events-none absolute -left-24 -top-24 h-96 w-96 rounded-full bg-cyan-300/40 blur-3xl" />
+            <div aria-hidden className="pointer-events-none absolute -bottom-32 -right-16 h-96 w-96 rounded-full bg-orange-400/40 blur-3xl" />
+            <div aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgb(255_255_255/0.08)_1px,transparent_1px),linear-gradient(90deg,rgb(255_255_255/0.08)_1px,transparent_1px)] bg-[size:72px_72px] [mask-image:radial-gradient(ellipse_70%_70%_at_50%_50%,black,transparent)]" />
+            <div className="relative">
+              <Reveal><h2 className="font-display text-5xl font-semibold leading-[1.02] tracking-tight text-slate-900 sm:text-6xl lg:text-7xl">Your next parcel is <span className="text-amber-300">already travelling.</span></h2></Reveal>
+              <Reveal delay={120}><p className="mx-auto mt-6 max-w-xl text-base text-slate-700 sm:text-lg">Sign up in a minute. Post a trip to earn on a journey you were making anyway, or send something small today.</p></Reveal>
+              <Reveal delay={220} className="mt-10 flex flex-wrap justify-center gap-3">
+                <Magnetic><Link to="/register" className="btn-shine inline-block rounded-2xl bg-white px-8 py-4 text-sm font-semibold text-blue-700 shadow-[0_14px_40px_-10px_rgba(0,0,0,0.5)] transition hover:brightness-95 active:scale-[0.98]">Create your account</Link></Magnetic>
+                <Magnetic strength={0.18}><Link to="/login" className="inline-block rounded-2xl border border-white/40 bg-white/10 px-8 py-4 text-sm font-semibold text-white backdrop-blur transition hover:bg-white/20">Log in</Link></Magnetic>
+              </Reveal>
+            </div>
+          </div>
         </section>
       </div>
     </div>
