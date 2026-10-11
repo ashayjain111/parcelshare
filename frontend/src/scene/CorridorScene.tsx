@@ -412,7 +412,7 @@ export default function CorridorScene({ progress, mobile, calm }: { progress: Mu
       camera={{ fov: 42, position: [0, 0.3, 9], near: 0.1, far: 90 }}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
     >
-      <fog attach="fog" args={['#eef4ff', 18, 58]} />
+      <fog attach="fog" args={['#dbe7ff', 18, 58]} />
       <ambientLight intensity={0.9} />
       <directionalLight position={[4, 6, 5]} intensity={1.5} color="#ffffff" />
       <Studio />

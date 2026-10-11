@@ -62,7 +62,7 @@
 }
 
 :root {
-  --bg: #f6f9ff;
+  --bg: #dfe9ff;
   --blue: #2563eb;
   --mx: 50vw;
   --my: 30vh;
@@ -85,10 +85,11 @@ body {
   @apply font-sans text-slate-800 antialiased;
   font-feature-settings: "cv11", "ss03";
   background:
-    radial-gradient(900px 560px at 6% -6%, rgb(96 165 250 / 0.28), transparent 62%),
-    radial-gradient(800px 520px at 98% 2%, rgb(56 189 248 / 0.22), transparent 60%),
-    radial-gradient(900px 600px at 50% 112%, rgb(147 197 253 / 0.30), transparent 60%),
-    linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+    radial-gradient(1000px 640px at 4% -8%, rgb(99 143 255 / 0.55), transparent 62%),
+    radial-gradient(900px 600px at 100% 0%, rgb(56 189 248 / 0.45), transparent 60%),
+    radial-gradient(1000px 700px at 85% 100%, rgb(167 139 250 / 0.45), transparent 62%),
+    radial-gradient(800px 600px at 0% 100%, rgb(125 211 252 / 0.5), transparent 60%),
+    linear-gradient(180deg, #e8f0ff 0%, #d9e6ff 45%, #e3e0ff 100%);
   background-attachment: fixed;
   min-height: 100vh;
   overflow-x: hidden;
@@ -101,12 +102,12 @@ body::after {
   inset: -25%;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.8;
+  opacity: 1;
   background:
-    radial-gradient(38% 34% at 18% 24%, rgb(167 139 250 / 0.36), transparent 70%),
-    radial-gradient(34% 30% at 82% 18%, rgb(253 186 116 / 0.42), transparent 70%),
-    radial-gradient(40% 34% at 72% 82%, rgb(110 231 183 / 0.34), transparent 70%),
-    radial-gradient(36% 30% at 24% 84%, rgb(125 211 252 / 0.42), transparent 70%);
+    radial-gradient(38% 34% at 18% 24%, rgb(139 92 246 / 0.38), transparent 70%),
+    radial-gradient(34% 30% at 82% 18%, rgb(251 146 60 / 0.34), transparent 70%),
+    radial-gradient(40% 34% at 72% 82%, rgb(45 212 191 / 0.34), transparent 70%),
+    radial-gradient(36% 30% at 24% 84%, rgb(56 189 248 / 0.45), transparent 70%);
   animation: aurora 26s ease-in-out infinite alternate;
 }
 
