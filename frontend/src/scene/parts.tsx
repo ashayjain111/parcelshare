@@ -8,17 +8,17 @@ import { seeded } from './env'
 /** Ambient animation speed: 1 in full-motion mode, much lower in calm mode. Scroll-driven motion is unaffected. */
 export const motion = { amb: 1 }
 
-export const GLOW_CYAN = new THREE.Color('#67e8f9').multiplyScalar(2.4)
-export const GLOW_INDIGO = new THREE.Color('#818cf8').multiplyScalar(2.2)
+export const GLOW_CYAN = new THREE.Color('#ffdf9e').multiplyScalar(2.4)
+export const GLOW_INDIGO = new THREE.Color('#e0a64d').multiplyScalar(2.2)
 
 /** Procedural studio lighting: coloured light panels give the metal something to reflect, with no HDR download. */
 export function Studio() {
   return (
     <Environment resolution={256} frames={1}>
-      <Lightformer form="rect" intensity={3.2} color="#8b9cff" position={[-5, 3, 4]} scale={[6, 3, 1]} />
-      <Lightformer form="rect" intensity={3.6} color="#22d3ee" position={[6, 1, -3]} rotation-y={-Math.PI / 2} scale={[8, 3, 1]} />
+      <Lightformer form="rect" intensity={3.2} color="#ffd9a0" position={[-5, 3, 4]} scale={[6, 3, 1]} />
+      <Lightformer form="rect" intensity={3.6} color="#ffd58a" position={[6, 1, -3]} rotation-y={-Math.PI / 2} scale={[8, 3, 1]} />
       <Lightformer form="ring" intensity={2.4} color="#ffffff" position={[0, 6, -2]} rotation-x={Math.PI / 2} scale={4} />
-      <Lightformer form="rect" intensity={1.6} color="#c084fc" position={[0, -4, 3]} rotation-x={-Math.PI / 2} scale={[10, 4, 1]} />
+      <Lightformer form="rect" intensity={1.6} color="#c9884a" position={[0, -4, 3]} rotation-x={-Math.PI / 2} scale={[10, 4, 1]} />
     </Environment>
   )
 }
@@ -79,15 +79,15 @@ export function ParcelModel({ spin = 0.32 }: { spin?: number }) {
       <group ref={body}>
         <mesh geometry={geo}>
           <meshPhysicalMaterial
-            color="#1c2370"
+            color="#2b2218"
             metalness={0.92}
             roughness={0.24}
             clearcoat={1}
             clearcoatRoughness={0.06}
-            iridescence={1}
-            iridescenceIOR={1.5}
-            iridescenceThicknessRange={[150, 650]}
-            envMapIntensity={2.4}
+            iridescence={0.35}
+            iridescenceIOR={1.3}
+            iridescenceThicknessRange={[100, 380]}
+            envMapIntensity={2.2}
           />
         </mesh>
         <lineSegments geometry={edges} scale={1.002}>
@@ -95,7 +95,7 @@ export function ParcelModel({ spin = 0.32 }: { spin?: number }) {
         </lineSegments>
         {/* soft outer glow shell */}
         <mesh geometry={geo} scale={1.07}>
-          <meshBasicMaterial color="#38bdf8" transparent opacity={0.07} side={THREE.BackSide} depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} />
+          <meshBasicMaterial color="#ffc971" transparent opacity={0.07} side={THREE.BackSide} depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} />
         </mesh>
         {/* shipping label on the front and back faces */}
         {[1, -1].map((side) => (
@@ -107,11 +107,11 @@ export function ParcelModel({ spin = 0.32 }: { spin?: number }) {
         {/* ribbon bands, slightly proud of the body */}
         <mesh>
           <boxGeometry args={[0.2, 1.12, 1.12]} />
-          <meshStandardMaterial color="#1b1f5e" emissive={GLOW_INDIGO} emissiveIntensity={0.9} toneMapped={false} />
+          <meshStandardMaterial color="#3a2a12" emissive={GLOW_INDIGO} emissiveIntensity={0.9} toneMapped={false} />
         </mesh>
         <mesh>
           <boxGeometry args={[1.52, 1.12, 0.2]} />
-          <meshStandardMaterial color="#1b1f5e" emissive={GLOW_INDIGO} emissiveIntensity={0.55} toneMapped={false} />
+          <meshStandardMaterial color="#3a2a12" emissive={GLOW_INDIGO} emissiveIntensity={0.55} toneMapped={false} />
         </mesh>
       </group>
       <mesh ref={halo}>
@@ -123,13 +123,13 @@ export function ParcelModel({ spin = 0.32 }: { spin?: number }) {
 }
 
 /** Drifting glow-dust. `box` is the volume it fills; count is kept low on phones. */
-export function Dust({ count, box, size = 0.035 }: { count: number; box: [number, number, number, number, number, number]; size?: number }) {
+export function Dust({ count, box, size = 0.028 }: { count: number; box: [number, number, number, number, number, number]; size?: number }) {
   const ref = useRef<THREE.Points>(null)
   const { positions, colors } = useMemo(() => {
     const p = new Float32Array(count * 3)
     const c = new Float32Array(count * 3)
-    const a = new THREE.Color('#818cf8')
-    const b = new THREE.Color('#22d3ee')
+    const a = new THREE.Color('#e0a64d')
+    const b = new THREE.Color('#ffd58a')
     const w = new THREE.Color('#ffffff')
     const rnd = seeded(count * 31 + 7)
     for (let i = 0; i < count; i++) {
@@ -144,6 +144,20 @@ export function Dust({ count, box, size = 0.035 }: { count: number; box: [number
     return { positions: p, colors: c }
   }, [count, box])
 
+  // a hard-edged round sprite, so particles read as crisp points of light rather than square pixels
+  const sprite = useMemo(() => {
+    const c = document.createElement('canvas')
+    c.width = c.height = 64
+    const g = c.getContext('2d')!
+    g.beginPath()
+    g.arc(32, 32, 28, 0, Math.PI * 2)
+    g.fillStyle = '#fff'
+    g.fill()
+    const t = new THREE.CanvasTexture(c)
+    t.colorSpace = THREE.SRGBColorSpace
+    return t
+  }, [])
+
   useFrame((_, dt) => {
     if (ref.current) ref.current.rotation.y += dt * 0.012 * motion.amb
   })
@@ -154,7 +168,7 @@ export function Dust({ count, box, size = 0.035 }: { count: number; box: [number
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
-      <pointsMaterial size={size} sizeAttenuation vertexColors transparent opacity={0.85} depthWrite={false} blending={THREE.AdditiveBlending} />
+      <pointsMaterial map={sprite} alphaTest={0.4} size={size} sizeAttenuation vertexColors transparent opacity={0.9} depthWrite={false} blending={THREE.AdditiveBlending} />
     </points>
   )
 }

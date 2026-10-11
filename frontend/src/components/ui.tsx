@@ -22,7 +22,7 @@ export function PageTitle({ title, sub, right }: { title: string; sub?: string; 
 type Variant = 'primary' | 'secondary' | 'danger' | 'ghost'
 const VARIANTS: Record<Variant, string> = {
   primary:
-    'btn-shine bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 bg-[length:200%_auto] text-white shadow-[0_8px_30px_-8px_rgba(99,102,241,0.9)] hover:bg-right hover:shadow-[0_8px_40px_-6px_rgba(99,102,241,1)] disabled:opacity-40 disabled:shadow-none',
+    'btn-shine bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 bg-[length:200%_auto] font-semibold text-[#1b1408] shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_10px_24px_-10px_rgba(197,143,56,0.8)] hover:bg-right hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.55),0_14px_30px_-10px_rgba(197,143,56,0.95)] disabled:opacity-40 disabled:shadow-none',
   secondary:
     'border border-white/12 bg-white/[0.05] text-slate-800 hover:border-white/25 hover:bg-white/[0.1] disabled:text-slate-400',
   danger:
@@ -153,7 +153,7 @@ export function Timeline({ events }: { events: EventView[] }) {
       {events.map((e, i) => (
         <li key={e.id} className="mb-5 ml-5 last:mb-0">
           <span
-            className={`absolute -left-[7px] mt-1.5 h-3 w-3 rounded-full border-2 border-[#0b0d1f] ${i === events.length - 1 ? 'bg-cyan-400 shadow-[0_0_14px_3px_rgba(34,211,238,0.7)]' : 'bg-indigo-500 shadow-[0_0_10px_1px_rgba(99,102,241,0.6)]'}`}
+            className={`absolute -left-[7px] mt-1.5 h-3 w-3 rounded-full border-2 border-[#14110d] ${i === events.length - 1 ? 'bg-cyan-400 shadow-[0_0_14px_3px_rgba(241,212,154,0.7)]' : 'bg-indigo-500 shadow-[0_0_10px_1px_rgba(197,143,56,0.6)]'}`}
           />
           <p className="text-sm font-medium text-slate-900">{EVENT_LABELS[e.type] ?? e.type}</p>
           <p className="mt-0.5 break-words text-xs text-slate-500">

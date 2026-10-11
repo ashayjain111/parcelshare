@@ -17,15 +17,15 @@ function Spinner() {
 /** A small transparent canvas with the hero parcel floating in glow-dust, used beside the login and sign-up forms. */
 export default function MiniParcel() {
   return (
-    <Canvas dpr={[1, 1.6]} camera={{ fov: 40, position: [0, 0.4, 5.4] }} gl={{ antialias: true }}>
-      <color attach="background" args={['#05060f']} />
+    <Canvas dpr={[1, 2]} camera={{ fov: 40, position: [0, 0.4, 5.4] }} gl={{ antialias: true }}>
+      <color attach="background" args={['#0a0908']} />
       <ambientLight intensity={0.4} />
-      <directionalLight position={[3, 5, 4]} intensity={1.2} color="#c7d2fe" />
+      <directionalLight position={[3, 5, 4]} intensity={1.2} color="#ffe9c4" />
       <Studio />
       <Dust count={420} box={[-5, 5, -3, 3, -4, 2]} size={0.03} />
       <Spinner />
-      <EffectComposer multisampling={0}>
-        <Bloom intensity={1.1} luminanceThreshold={0.35} luminanceSmoothing={0.4} mipmapBlur />
+      <EffectComposer multisampling={4}>
+        <Bloom intensity={0.5} luminanceThreshold={0.7} luminanceSmoothing={0.12} mipmapBlur radius={0.4} />
       </EffectComposer>
     </Canvas>
   )

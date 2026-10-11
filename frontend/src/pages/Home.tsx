@@ -21,7 +21,7 @@ function Words({ text, className = '', start = 0 }: { text: string; className?: 
     <>
       {text.split(' ').map((w, i) => (
         <span key={i}>
-          <span className={`word ${className}`} style={{ animationDelay: `${(start + i) * 75 + 150}ms` }}>{w}</span>{' '}
+          <span className="word-mask"><span className={`word ${className}`} style={{ animationDelay: `${(start + i) * 70 + 120}ms` }}>{w}</span></span>{' '}
         </span>
       ))}
     </>
@@ -40,16 +40,16 @@ function Section({ id, stage, side = 'left', children, className = '' }: { id?: 
 
 function Eyebrow({ n, children }: { n: string; children: ReactNode }) {
   return (
-    <p className="mb-4 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
-      <span className="font-display text-sm text-slate-400">{n}</span>
-      <span className="h-px w-8 bg-gradient-to-r from-cyan-300 to-transparent" />
+    <p className="mb-5 flex items-center gap-4 text-[11px] font-semibold uppercase tracking-[0.26em] text-cyan-300">
+      <span className="numeral text-3xl leading-none">{n}</span>
+      <span className="draw-line h-px w-14 bg-cyan-300/70" />
       {children}
     </p>
   )
 }
 
 function Heading({ children }: { children: ReactNode }) {
-  return <h2 className={`font-display text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-6xl ${shadow}`}>{children}</h2>
+  return <h2 className={`font-display text-4xl font-medium leading-[1.04] tracking-[-0.022em] text-white sm:text-5xl lg:text-[3.6rem] ${shadow}`}>{children}</h2>
 }
 
 function Lead({ children }: { children: ReactNode }) {
@@ -82,7 +82,7 @@ function MatchCard() {
           <svg viewBox="0 0 36 36" className="absolute inset-0 -rotate-90">
             <circle cx="18" cy="18" r="15.5" fill="none" stroke="rgb(255 255 255 / .1)" strokeWidth="2.5" />
             <circle cx="18" cy="18" r="15.5" fill="none" stroke="url(#sg)" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="97.4" strokeDashoffset="10.7" />
-            <defs><linearGradient id="sg"><stop stopColor="#818cf8" /><stop offset="1" stopColor="#22d3ee" /></linearGradient></defs>
+            <defs><linearGradient id="sg"><stop stopColor="#e0a64d" /><stop offset="1" stopColor="#ffd58a" /></linearGradient></defs>
           </svg>
           <span className="font-display text-lg font-semibold text-white">89</span>
         </div>
@@ -109,7 +109,7 @@ function HandoverCard() {
       <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Handover code · single use · 15 min</p>
       <div className="mt-3 flex gap-2">
         {'048213'.split('').map((d, i) => (
-          <span key={i} className="grid h-14 flex-1 place-items-center rounded-xl border border-cyan-300/30 bg-cyan-400/10 font-display text-3xl font-semibold text-cyan-200 shadow-[0_0_24px_-6px_rgba(34,211,238,0.7)]">{d}</span>
+          <span key={i} className="grid h-14 flex-1 place-items-center rounded-xl border border-cyan-300/30 bg-cyan-400/10 font-display text-3xl font-semibold text-cyan-200 shadow-[0_0_24px_-6px_rgba(241,212,154,0.7)]">{d}</span>
         ))}
       </div>
       <ul className="mt-5 space-y-2.5 text-sm">
@@ -249,16 +249,20 @@ function Landing() {
       <div className="relative z-10">
         {/* 00 hero */}
         <Section stage={0} className={`min-h-[100svh] ${mobile ? 'items-end pb-16' : ''}`}>
-          <div className="max-w-xl">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgb(255_244_225/0.045)_1px,transparent_1px),linear-gradient(90deg,rgb(255_244_225/0.045)_1px,transparent_1px)] bg-[size:84px_84px] [mask-image:radial-gradient(ellipse_70%_60%_at_30%_50%,black,transparent)]"
+          />
+          <div className="relative max-w-xl">
             <Reveal>
               <span className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.05] px-3.5 py-1.5 text-xs font-medium text-slate-700 backdrop-blur">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cyan-400 shadow-[0_0_10px_2px_rgba(34,211,238,0.8)]" />
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cyan-400 shadow-[0_0_10px_2px_rgba(241,212,154,0.8)]" />
                 Peer-to-peer parcel sharing
               </span>
             </Reveal>
             <Reveal delay={90}>
-              <h1 className={`mt-6 font-display text-5xl font-semibold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl ${shadow}`}>
-                <Words text="Send it with someone" /> <Words text="already going there." className="text-gradient" start={4} />
+              <h1 className={`mt-6 font-display text-5xl font-medium leading-[1.0] tracking-[-0.025em] text-white sm:text-6xl lg:text-[5.4rem] ${shadow}`}>
+                <Words text="Send it with someone" /> <Words text="already going there." className="text-gradient italic" start={4} />
               </h1>
             </Reveal>
             <Reveal delay={180}>
@@ -269,7 +273,7 @@ function Landing() {
             </Reveal>
             <Reveal delay={270} className="mt-9 flex flex-wrap items-center gap-3">
               <Magnetic>
-                <Link to="/register" className="btn-shine inline-block rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_10px_40px_-8px_rgba(99,102,241,0.95)] transition hover:brightness-110 active:scale-[0.98]">
+                <Link to="/register" className="btn-shine inline-block rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_10px_40px_-8px_rgba(197,143,56,0.95)] transition hover:brightness-110 active:scale-[0.98]">
                   Get started free
                 </Link>
               </Magnetic>
@@ -330,15 +334,15 @@ function Landing() {
           <div className="order-2 hidden lg:block" />
           <div className="order-1 lg:order-3">
             <Reveal><Eyebrow n="04">Delivered, then paid</Eyebrow></Reveal>
-            <Reveal delay={80}><Heading>Money moves only when the parcel does.</Heading></Reveal>
+            <Reveal delay={80}><Heading>The money moves when the parcel does.</Heading></Reveal>
             <Reveal delay={160}><Lead>Payment is held from the moment you book. It is released to the traveller after delivery, once the dispute window closes or you confirm. If something goes wrong, an admin can refund or split it.</Lead></Reveal>
           </div>
         </Section>
 
         {/* features */}
         <section data-stage={1} className="mx-auto max-w-6xl px-5 py-28">
-          <Reveal><Eyebrow n="05">Built for trust</Eyebrow></Reveal>
-          <Reveal delay={80}><Heading>Everything a marketplace of strangers needs.</Heading></Reveal>
+          <Reveal><Eyebrow n="05">Why it is safe</Eyebrow></Reveal>
+          <Reveal delay={80}><Heading>Built so strangers can trust each other.</Heading></Reveal>
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map(([t, d, icon], i) => (
               <Reveal key={t} delay={(i % 3) * 90}>
@@ -361,7 +365,7 @@ function Landing() {
         {/* routes marquee */}
         <section aria-label="Routes you can travel today" className="relative overflow-hidden border-y border-white/10 bg-white/[0.02] py-7 backdrop-blur-sm">
           <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-400">Routes you can travel today</p>
-          <div className="marquee flex w-max gap-12 whitespace-nowrap font-display text-2xl font-semibold text-slate-600">
+          <div className="marquee flex w-max gap-12 whitespace-nowrap font-display text-3xl font-normal italic text-slate-500">
             {[...CITIES, ...CITIES].map((c, i) => (
               <span key={i} className="flex items-center gap-12">{c}<span className="text-cyan-300">→</span></span>
             ))}
@@ -370,10 +374,10 @@ function Landing() {
 
         {/* final CTA */}
         <section data-stage={1} className="mx-auto flex min-h-[90svh] max-w-4xl flex-col items-center justify-center px-5 py-24 text-center">
-          <Reveal><h2 className={`font-display text-5xl font-semibold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl ${shadow}`}>Your next parcel is <span className="text-gradient">already travelling.</span></h2></Reveal>
-          <Reveal delay={120}><p className={`mx-auto mt-6 max-w-xl text-base text-slate-600 sm:text-lg ${shadow}`}>Join in a minute. Post a trip to earn on a journey you are already taking, or send something small today.</p></Reveal>
+          <Reveal><h2 className={`font-display text-5xl font-semibold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-7xl ${shadow}`}>Your next parcel is <span className="text-gradient italic">already travelling.</span></h2></Reveal>
+          <Reveal delay={120}><p className={`mx-auto mt-6 max-w-xl text-base text-slate-600 sm:text-lg ${shadow}`}>Sign up in a minute. Post a trip to earn on a journey you were making anyway, or send something small today.</p></Reveal>
           <Reveal delay={220} className="mt-10 flex flex-wrap justify-center gap-3">
-            <Magnetic><Link to="/register" className="btn-shine inline-block rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-8 py-4 text-sm font-semibold text-white shadow-[0_10px_50px_-8px_rgba(99,102,241,1)] transition hover:brightness-110 active:scale-[0.98]">Create your account</Link></Magnetic>
+            <Magnetic><Link to="/register" className="btn-shine inline-block rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-8 py-4 text-sm font-semibold text-white shadow-[0_10px_50px_-8px_rgba(197,143,56,1)] transition hover:brightness-110 active:scale-[0.98]">Create your account</Link></Magnetic>
             <Magnetic strength={0.18}><Link to="/login" className="inline-block rounded-2xl border border-white/15 bg-white/[0.05] px-8 py-4 text-sm font-semibold text-slate-900 backdrop-blur transition hover:bg-white/10">Log in</Link></Magnetic>
           </Reveal>
         </section>

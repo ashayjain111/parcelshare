@@ -52,7 +52,7 @@ export default function Layout() {
     <MotionConfig reducedMotion={motion === 'calm' ? 'always' : 'never'}>
     <div className="relative z-[1] min-h-screen">
       {!landing && (
-        <a href="#main" className="sr-only z-[80] rounded-lg bg-white px-4 py-2 text-sm font-semibold text-[#05060f] focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
+        <a href="#main" className="sr-only z-[80] rounded-lg bg-white px-4 py-2 text-sm font-semibold text-[#0a0908] focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
           Skip to content
         </a>
       )}
@@ -101,7 +101,7 @@ export default function Layout() {
             ) : (
               <>
                 <Link to="/login" className="rounded-lg px-3 py-1.5 text-sm font-medium text-slate-600 transition hover:text-slate-900">Log in</Link>
-                <Link to="/register" className="rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-400 px-4 py-2 text-sm font-semibold text-white shadow-[0_6px_24px_-6px_rgba(99,102,241,0.9)] transition hover:brightness-110">
+                <Link to="/register" className="rounded-xl bg-gradient-to-r from-indigo-500 to-cyan-400 px-4 py-2 text-sm font-semibold text-white shadow-[0_6px_24px_-6px_rgba(197,143,56,0.9)] transition hover:brightness-110">
                   Get started
                 </Link>
               </>
@@ -124,7 +124,7 @@ export default function Layout() {
         </div>
 
         {user && menu && (
-          <div className="glass mx-auto mt-2 max-w-6xl rounded-2xl bg-[#0b0d1f]/95 p-2 lg:hidden">
+          <div className="glass mx-auto mt-2 max-w-6xl rounded-2xl bg-[#14110d]/95 p-2 lg:hidden">
             {items.map(([to, label, end]) => <NavLink key={to} to={to} end={end} className={({ isActive }) => `block ${link({ isActive })} py-2.5`}>{label}</NavLink>)}
             {user.role === 'ADMIN' && <NavLink to="/admin" className={({ isActive }) => `block ${link({ isActive })} py-2.5`}>Admin</NavLink>}
             <NavLink to="/profile" className={({ isActive }) => `block ${link({ isActive })} py-2.5`}>Profile</NavLink>
@@ -159,7 +159,7 @@ export default function Layout() {
         aria-pressed={motion === 'full'}
         className="glass fixed bottom-4 right-4 z-50 flex cursor-pointer items-center gap-2 rounded-full px-3.5 py-2 text-xs font-medium text-slate-700 transition hover:text-slate-900"
       >
-        <span className={`h-2 w-2 rounded-full ${motion === 'full' ? 'bg-cyan-400 shadow-[0_0_10px_2px_rgba(34,211,238,0.8)]' : 'bg-slate-400'}`} />
+        <span className={`h-2 w-2 rounded-full ${motion === 'full' ? 'bg-cyan-400 shadow-[0_0_10px_2px_rgba(241,212,154,0.8)]' : 'bg-slate-400'}`} />
         {motion === 'full' ? 'Full motion' : 'Calm motion'}
       </button>
 

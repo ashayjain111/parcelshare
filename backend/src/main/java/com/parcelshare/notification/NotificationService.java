@@ -26,6 +26,9 @@ public class NotificationService {
 
     @Transactional
     public void notify(AppUser to, String type, String title, String line, String path) {
+        if (to.getStatus() == AppUser.Status.DELETED) {
+            return; // the account was anonymised: its email address is a placeholder and the person asked us to forget them
+        }
         repo.save(new Notification(to.getId(), type, title, line, path));
         if (to.getEmail() != null) {
             String first = to.getFullName() == null || to.getFullName().isBlank() ? "there" : to.getFullName().trim().split(" ")[0];

@@ -45,7 +45,7 @@ export function Toaster() {
             transition={{ type: 'spring', stiffness: 420, damping: 32 }}
             className={`glass pointer-events-auto flex items-start gap-3 rounded-2xl px-4 py-3 text-sm ${t.kind === 'ok' ? 'text-slate-900' : 'text-red-700'}`}
           >
-            <span className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full text-[11px] font-bold text-white ${t.kind === 'ok' ? 'bg-gradient-to-br from-emerald-400 to-cyan-400 shadow-[0_0_14px_2px_rgba(52,211,153,0.5)]' : 'bg-red-500'}`}>
+            <span className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full text-[11px] font-bold text-white ${t.kind === 'ok' ? 'bg-gradient-to-br from-emerald-400 to-cyan-400 shadow-[0_0_14px_2px_rgba(74,222,159,0.5)]' : 'bg-red-500'}`}>
               {t.kind === 'ok' ? '✓' : '!'}
             </span>
             <span>{t.msg}</span>

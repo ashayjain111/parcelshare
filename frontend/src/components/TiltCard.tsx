@@ -34,7 +34,7 @@ export default function TiltCard({ children, className = '', max = 5 }: { childr
       <span
         aria-hidden
         className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ background: 'radial-gradient(360px circle at var(--lx,50%) var(--ly,0%), rgb(129 140 248 / 0.14), transparent 60%)' }}
+        style={{ background: 'radial-gradient(360px circle at var(--lx,50%) var(--ly,0%), rgb(228 189 114 / 0.14), transparent 60%)' }}
       />
       <div className="relative">{children}</div>
     </div>

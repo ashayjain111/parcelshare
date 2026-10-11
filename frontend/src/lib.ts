@@ -1,6 +1,7 @@
 // ---------------------------------------------------------------- API client
 
-const BASE: string = import.meta.env.VITE_API_URL ?? 'http://localhost:8090'
+// In development the backend is on localhost. In a production build the address must be provided as VITE_API_URL.
+const BASE: string = import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://localhost:8090' : '')
 const TOKEN_KEY = 'ps_token'
 
 export class ApiError extends Error {
@@ -30,6 +31,9 @@ export const setToken = (t: string | null) => {
 
 /** fetch that turns a network failure into a clear, human message (offline, server asleep, wrong URL). */
 async function safeFetch(url: string, init?: RequestInit): Promise<Response> {
+  if (!BASE) {
+    throw new ApiError(0, 'This website was deployed without its backend address. The site owner needs to set VITE_API_URL and redeploy.')
+  }
   try {
     return await fetch(url, init)
   } catch {

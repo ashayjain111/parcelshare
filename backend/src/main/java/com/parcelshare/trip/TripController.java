@@ -91,6 +91,7 @@ public class TripController {
                 : date.plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC);
         return trips.searchByDate(start, end, Trip.Status.OPEN).stream()
                 .filter(t -> t.remainingGrams() > 0)
+                .filter(t -> t.getTraveller().getStatus() == AppUser.Status.ACTIVE)
                 .filter(t -> from == null || t.getOrigin().getId().equals(from))
                 .filter(t -> to == null || t.getDestination().getId().equals(to))
                 .map(TripView::of).toList();

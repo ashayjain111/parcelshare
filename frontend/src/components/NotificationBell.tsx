@@ -47,7 +47,7 @@ export default function NotificationBell() {
           <path d="M10.3 21a1.9 1.9 0 0 0 3.4 0" />
         </svg>
         {unread > 0 && (
-          <span className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 px-1 text-[10px] font-bold text-white shadow-[0_0_12px_2px_rgba(34,211,238,0.6)]">
+          <span className="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 px-1 text-[10px] font-bold text-white shadow-[0_0_12px_2px_rgba(241,212,154,0.6)]">
             {unread > 9 ? '9+' : unread}
           </span>
         )}
@@ -60,7 +60,7 @@ export default function NotificationBell() {
           exit={{ opacity: 0, y: -8, scale: 0.97 }}
           transition={{ type: 'spring', stiffness: 460, damping: 34 }}
           style={{ transformOrigin: 'top right' }}
-          className="glass absolute right-0 top-12 z-50 w-[min(92vw,22rem)] overflow-hidden rounded-2xl bg-[#0b0d1f]/95 p-1.5"
+          className="glass absolute right-0 top-12 z-50 w-[min(92vw,22rem)] overflow-hidden rounded-2xl bg-[#14110d]/95 p-1.5"
         >
           <p className="px-3 pb-1 pt-2 text-xs font-semibold uppercase tracking-wider text-slate-500">Notifications</p>
           {!inbox.data?.items.length ? (
@@ -77,7 +77,7 @@ export default function NotificationBell() {
                     className="block w-full cursor-pointer rounded-xl px-3 py-2.5 text-left transition hover:bg-white/[0.07]"
                   >
                     <span className="flex items-start gap-2">
-                      {!n.read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-cyan-400 shadow-[0_0_8px_2px_rgba(34,211,238,0.7)]" />}
+                      {!n.read && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-cyan-400 shadow-[0_0_8px_2px_rgba(241,212,154,0.7)]" />}
                       <span className="min-w-0">
                         <span className="block truncate text-sm font-medium text-slate-900">{n.title}</span>
                         {n.body && <span className="mt-0.5 line-clamp-2 block text-xs text-slate-500">{n.body}</span>}

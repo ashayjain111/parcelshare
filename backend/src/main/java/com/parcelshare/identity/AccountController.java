@@ -67,7 +67,7 @@ public class AccountController {
         out.put("tripsPosted", trips.findByTravellerIdOrderByDepartsAtDesc(me.id()).stream().map(TripView::of).toList());
         out.put("bookings", bookingService.mine(me));
         out.put("reviewsAboutYou", ratings.findTop30ByRateeIdOrderByIdDesc(me.id()).stream()
-                .map(r -> Map.of("score", r.getScore(), "comment", String.valueOf(r.getComment()), "at", r.getCreatedAt())).toList());
+                .map(r -> Map.of("score", r.getScore(), "comment", java.util.Objects.toString(r.getComment(), ""), "at", r.getCreatedAt())).toList());
         out.put("notifications", notifications.findTop30ByUserIdOrderByIdDesc(me.id()).stream()
                 .map(n -> Map.of("title", n.getTitle(), "at", n.getCreatedAt())).toList());
         return out;

@@ -46,7 +46,7 @@ export function IdentityCallback() {
         ) : null}
         {result && (
           <>
-            <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 text-2xl text-white shadow-[0_0_30px_4px_rgba(52,211,153,0.5)]">✓</div>
+            <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 text-2xl text-white shadow-[0_0_30px_4px_rgba(74,222,159,0.5)]">✓</div>
             <h1 className="mt-4 font-display text-2xl font-semibold text-white">Identity verified</h1>
             {result.travellerVerification === 'APPROVED' ? (
               <p className="mt-2 text-sm text-slate-500">You are now a verified traveller and can post trips straight away.</p>

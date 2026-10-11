@@ -24,7 +24,7 @@ export function BookingList() {
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="font-semibold">{b.parcel.publicCode} · {b.trip.origin.name} → {b.trip.destination.name}</p>
                   <div className="flex items-center gap-2">
-                    {b.actions.some((a) => NEEDS_ME.has(a)) && <span className="rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 px-2.5 py-0.5 text-xs font-semibold text-white shadow-[0_0_14px_-2px_rgba(34,211,238,0.7)]">Action needed</span>}
+                    {b.actions.some((a) => NEEDS_ME.has(a)) && <span className="rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 px-2.5 py-0.5 text-xs font-semibold text-white shadow-[0_0_14px_-2px_rgba(241,212,154,0.7)]">Action needed</span>}
                     <StatusBadge status={b.status} />
                   </div>
                 </div>
