@@ -19,10 +19,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 /**
- * DigiLocker (MeitY / API Setu) sign-in. Only active when DIGILOCKER_CLIENT_ID is set.
- * Getting a client id and secret means registering as a DigiLocker requester through API Setu and being approved;
- * see DEPLOY.md. The endpoint URLs are configurable because they are controlled by the government, not by us:
- * confirm them against the current API Setu documentation when you receive your credentials.
+ * DigiLocker (MeitY / API Setu) sign-in, written against the DigiLocker Requester API Specification v1.12.
+ * Only active when DIGILOCKER_CLIENT_ID is set. The client id and secret come from the API Setu partner portal after approval;
+ * see DEPLOY.md. The endpoint URLs default to the production paths in the specification and can be overridden.
  */
 @Component
 @ConditionalOnExpression("'${parcelshare.digilocker-client-id:}' != ''")
@@ -56,30 +55,62 @@ public class DigiLockerProvider implements IdentityProvider {
 
     @Override
     public VerifiedIdentity exchange(String code, String codeVerifier, String redirectUri) {
+        // API Setu / DigiLocker Requester API: the client authenticates with HTTP Basic, and PKCE proves the same browser started the flow.
         String form = "grant_type=authorization_code"
                 + "&code=" + enc(code)
                 + "&client_id=" + enc(props.digilockerClientId())
-                + "&client_secret=" + enc(props.digilockerClientSecret())
                 + "&redirect_uri=" + enc(redirectUri)
                 + "&code_verifier=" + enc(codeVerifier);
         JsonNode token = send(HttpRequest.newBuilder(URI.create(props.digilockerTokenUrl()))
                 .timeout(Duration.ofSeconds(15))
                 .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("Authorization", basic())
                 .POST(HttpRequest.BodyPublishers.ofString(form)).build());
         String accessToken = token.path("access_token").asText("");
         if (accessToken.isBlank()) {
             throw ApiException.bad("DigiLocker did not accept the sign-in. Please try again.");
         }
-        JsonNode user = send(HttpRequest.newBuilder(URI.create(props.digilockerUserUrl()))
-                .timeout(Duration.ofSeconds(15))
-                .header("Authorization", "Bearer " + accessToken)
-                .GET().build());
-        String name = user.path("name").asText("").trim();
-        String reference = user.path("digilockerid").asText("").trim();
-        if (name.isEmpty() || reference.isEmpty()) {
-            throw ApiException.bad("DigiLocker did not return a verified name. Please try again.");
+        try {
+            // Since spec v1.6 the token response already carries the verified name and DigiLocker id; only ask again if it does not.
+            JsonNode who = token;
+            if (who.path("name").asText("").isBlank() || who.path("digilockerid").asText("").isBlank()) {
+                who = send(HttpRequest.newBuilder(URI.create(props.digilockerUserUrl()))
+                        .timeout(Duration.ofSeconds(15))
+                        .header("Authorization", "Bearer " + accessToken)
+                        .GET().build());
+            }
+            String name = who.path("name").asText("").trim();
+            String reference = who.path("digilockerid").asText("").trim();
+            if (name.isEmpty() || reference.isEmpty()) {
+                throw ApiException.bad("DigiLocker did not return a verified name. Please try again.");
+            }
+            // Only the name and reference id are kept: date of birth, gender and documents are never read or stored.
+            return new VerifiedIdentity(name(), name, reference);
+        } finally {
+            revoke(accessToken);
         }
-        return new VerifiedIdentity(name(), name, reference);
+    }
+
+    /** We only needed to know who the person is, so give the access back straight away. Best effort: a failure here never blocks sign-in. */
+    private void revoke(String accessToken) {
+        try {
+            String url = props.digilockerTokenUrl().replaceAll("/token/?$", "/revoke");
+            http.send(HttpRequest.newBuilder(URI.create(url))
+                    .timeout(Duration.ofSeconds(8))
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .header("Authorization", basic())
+                    .POST(HttpRequest.BodyPublishers.ofString("token=" + enc(accessToken) + "&token_type_hint=access_token")).build(),
+                    HttpResponse.BodyHandlers.discarding());
+        } catch (IOException e) {
+            log.debug("DigiLocker token revoke failed: {}", e.getMessage());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    private String basic() {
+        String raw = props.digilockerClientId() + ":" + props.digilockerClientSecret();
+        return "Basic " + java.util.Base64.getEncoder().encodeToString(raw.getBytes(StandardCharsets.UTF_8));
     }
 
     private JsonNode send(HttpRequest request) {

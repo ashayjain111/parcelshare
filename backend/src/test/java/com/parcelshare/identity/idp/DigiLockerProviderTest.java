@@ -22,8 +22,11 @@ class DigiLockerProviderTest {
     private HttpServer server;
     private String base;
     private final AtomicReference<String> lastTokenBody = new AtomicReference<>();
+    private final AtomicReference<String> lastTokenAuth = new AtomicReference<>();
     private final AtomicReference<String> lastUserAuth = new AtomicReference<>();
+    private final AtomicReference<String> lastRevokeBody = new AtomicReference<>();
     private volatile String userJson = "{\"digilockerid\":\"dl-123\",\"name\":\"Priya Singh\"}";
+    private volatile String tokenExtra = "";
 
     @BeforeEach
     void start() throws IOException {
@@ -31,7 +34,8 @@ class DigiLockerProviderTest {
         server.createContext("/token", ex -> {
             String body = new String(ex.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
             lastTokenBody.set(body);
-            byte[] out = (body.contains("code=good") ? "{\"access_token\":\"tok-1\"}" : "{\"error\":\"invalid_grant\"}").getBytes(StandardCharsets.UTF_8);
+            lastTokenAuth.set(ex.getRequestHeaders().getFirst("Authorization"));
+            byte[] out = (body.contains("code=good") ? ("{\"access_token\":\"tok-1\"" + tokenExtra + "}") : "{\"error\":\"invalid_grant\"}").getBytes(StandardCharsets.UTF_8);
             ex.sendResponseHeaders(body.contains("code=good") ? 200 : 400, out.length);
             ex.getResponseBody().write(out);
             ex.close();
@@ -41,6 +45,11 @@ class DigiLockerProviderTest {
             byte[] out = userJson.getBytes(StandardCharsets.UTF_8);
             ex.sendResponseHeaders(200, out.length);
             ex.getResponseBody().write(out);
+            ex.close();
+        });
+        server.createContext("/revoke", ex -> {
+            lastRevokeBody.set(new String(ex.getRequestBody().readAllBytes(), StandardCharsets.UTF_8));
+            ex.sendResponseHeaders(200, -1);
             ex.close();
         });
         server.start();
@@ -76,8 +85,20 @@ class DigiLockerProviderTest {
         assertEquals("dl-123", id.reference());
         assertTrue(lastTokenBody.get().contains("grant_type=authorization_code"));
         assertTrue(lastTokenBody.get().contains("code_verifier=verifier-1"));
-        assertTrue(lastTokenBody.get().contains("client_secret=my-secret"), "the secret goes server-to-server only");
+        assertTrue(!lastTokenBody.get().contains("my-secret"), "the secret travels in the Basic header, not the body");
+        assertEquals("Basic " + java.util.Base64.getEncoder().encodeToString("my-client:my-secret".getBytes(StandardCharsets.UTF_8)), lastTokenAuth.get());
         assertEquals("Bearer tok-1", lastUserAuth.get());
+        assertTrue(lastRevokeBody.get().contains("token=tok-1"), "the access token is handed back once we know who the person is");
+    }
+
+    @Test
+    void theNameInTheTokenResponseIsUsedWithoutAnotherCall() {
+        tokenExtra = ",\"name\":\"Rohan Mehta\",\"digilockerid\":\"dl-777\",\"dob\":\"31121970\",\"gender\":\"M\"";
+        lastUserAuth.set(null);
+        var id = provider().exchange("good", "v", "https://app.example/identity/callback");
+        assertEquals("Rohan Mehta", id.name());
+        assertEquals("dl-777", id.reference());
+        assertEquals(null, lastUserAuth.get(), "no second request is needed when the token response already says who it is");
     }
 
     @Test

@@ -47,16 +47,24 @@ REQUIRE_EMAIL_VERIFICATION=true   # only after you have confirmed emails arrive
 Travellers can verify instantly with DigiLocker instead of waiting for a manual admin check. The whole flow is built and tested
 (consent screen, one-time state, PKCE, name matching, one identity per account). It switches on when you add credentials:
 
-1. Register your organisation as a DigiLocker **requester** through **API Setu** (apisetu.gov.in). This is a government approval
-   process that can take time and may require a registered entity. I cannot do this for you.
-2. When approved you receive a client id and secret and register `https://YOUR-VERCEL-ADDRESS/identity/callback` as the redirect URI.
-3. Add to Render: `DIGILOCKER_CLIENT_ID`, `DIGILOCKER_CLIENT_SECRET`.
-4. The three endpoint URLs default to DigiLocker's public OAuth2 paths, but they are controlled by the government. Confirm them against the
-   current API Setu documentation and override with `DIGILOCKER_AUTHORIZE_URL`, `DIGILOCKER_TOKEN_URL`, `DIGILOCKER_USER_URL` if they differ.
-5. Check the real response contains the fields we read (`name`, `digilockerid`). The client rejects a response without a verified name.
+The integration follows the official **DigiLocker Requester API Specification v1.12** (OAuth 2.0 authorization code + PKCE). Credentials come
+from the **API Setu partner portal**. Steps for you (I cannot create accounts or apply on your behalf):
 
-What is stored: the verified **name** and DigiLocker's pseudonymous **reference id**. ParcelShare never asks for, receives or stores an
-Aadhaar number, document images or a date of birth. Do not add an Aadhaar-number field: private companies are restricted by law from
+1. Go to the API Setu partner portal (**partners.apisetu.gov.in**), sign up as a partner organisation and complete its verification.
+2. In the portal, choose the **DigiLocker** requester / authentication API and create an application. This is a government approval
+   that can take time and may require a registered entity.
+3. Set the redirect URI to exactly `https://parcelshare.vercel.app/identity/callback` (your `FRONTEND_URL` + `/identity/callback`).
+4. When approved you get a **client id** and **client secret**. Add them to Render as `DIGILOCKER_CLIENT_ID` and `DIGILOCKER_CLIENT_SECRET`.
+5. The endpoints default to the production URLs in the specification (`/public/oauth2/1/authorize`, `/token`, `/user`, `/revoke` on
+   `api.digitallocker.gov.in`). If the portal gives you different URLs for your account (for example a sandbox), override
+   `DIGILOCKER_AUTHORIZE_URL`, `DIGILOCKER_TOKEN_URL`, `DIGILOCKER_USER_URL`. The revoke URL is derived from the token URL.
+6. Test with a real DigiLocker account. The client rejects any response without a verified name and DigiLocker id.
+
+How the sign-in works: the user is sent to DigiLocker's consent page with a one-time state and PKCE challenge; we exchange the code
+using HTTP Basic client credentials, read only the name and DigiLocker id, then immediately revoke the access token.
+
+What is stored: the verified **name** and DigiLocker's pseudonymous **reference id**. ParcelShare never asks for or stores an
+Aadhaar number, document images or a date of birth (DigiLocker's token response includes date of birth and gender; they are discarded unread). Do not add an Aadhaar-number field: private companies are restricted by law from
 doing Aadhaar authentication themselves, and holding Aadhaar numbers creates serious liability.
 A **driving licence** is verified through the same DigiLocker consent screen (the user chooses what to share); it needs no separate integration.
 Without credentials, demo mode shows a clearly labelled stand-in consent screen so the flow can be demonstrated.
