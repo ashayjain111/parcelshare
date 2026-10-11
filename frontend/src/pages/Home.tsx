@@ -13,6 +13,8 @@ import { webglAvailable } from '../scene/env'
 // The 3D scene is large (three.js), so it loads after the page shell and only on this screen.
 const CorridorScene = lazy(() => import('../scene/CorridorScene'))
 
+const HUES = ['bg-blue-500/15 text-blue-700', 'bg-emerald-500/15 text-emerald-700', 'bg-purple-500/15 text-purple-700', 'bg-orange-500/15 text-orange-700', 'bg-sky-500/20 text-sky-700', 'bg-rose-500/15 text-rose-700']
+const DOTS = ['bg-blue-500', 'bg-orange-400', 'bg-emerald-500', 'bg-purple-500', 'bg-sky-400', 'bg-rose-400']
 const CITIES = ['Delhi NCR', 'Lucknow', 'Kanpur', 'Jaipur', 'Chandigarh', 'Dehradun', 'Agra', 'Varanasi']
 
 /** Reveals a line of text word by word, each word blurring into focus a beat after the last. */
@@ -267,7 +269,7 @@ function Landing() {
             </Reveal>
             <Reveal delay={270} className="mt-9 flex flex-wrap items-center gap-3">
               <Magnetic>
-                <Link to="/register" className="btn-shine inline-block rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_10px_40px_-8px_rgba(37,99,235,0.95)] transition hover:brightness-110 active:scale-[0.98]">
+                <Link to="/register" className="btn-shine btn-ring inline-block rounded-2xl bg-gradient-to-r from-indigo-500 via-violet-500 to-cyan-400 px-7 py-3.5 text-sm font-semibold text-white shadow-[0_10px_40px_-8px_rgba(37,99,235,0.95)] transition hover:brightness-110 active:scale-[0.98]">
                   Get started free
                 </Link>
               </Magnetic>
@@ -290,10 +292,21 @@ function Landing() {
               </div>
             </div>
           </div>
+          <div aria-hidden className="pointer-events-none absolute inset-0 hidden xl:block">
+            {[
+              ['✓ ID verified', 'right-[34%] top-[16%]', 'text-emerald-700', 'bg-emerald-400', '0s'],
+              ['₹80 held safely', 'right-[3%] top-[48%]', 'text-orange-700', 'bg-orange-400', '1.6s'],
+              ['QR handover', 'right-[30%] top-[62%]', 'text-purple-700', 'bg-purple-400', '3.1s'],
+            ].map(([t, pos, tc, dot, delay]) => (
+              <span key={t} className={`glass absolute ${pos} flex animate-float items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold ${tc}`} style={{ animationDelay: delay }}>
+                <span className={`h-2 w-2 rounded-full ${dot}`} />{t}
+              </span>
+            ))}
+          </div>
           <a href="#match" aria-label="See how it works" className="glass absolute inset-x-5 bottom-6 hidden grid-cols-3 gap-px overflow-hidden rounded-2xl text-left transition hover:shadow-[0_0_0_1px_rgba(37,99,235,0.35),0_24px_48px_-24px_rgba(30,64,175,0.4)] md:grid">
-            {[['01', 'Post or find a trip', 'Travellers list journeys they are already making.'], ['02', 'Hand over with a code', 'A one-time code and photos confirm the exchange.'], ['03', 'Paid on delivery', 'Payment is held, then released once it arrives.']].map(([n, t, d]) => (
+            {[['01', 'Post or find a trip', 'Travellers list journeys they are already making.'], ['02', 'Hand over with a code', 'A one-time code and photos confirm the exchange.'], ['03', 'Paid on delivery', 'Payment is held, then released once it arrives.']].map(([n, t, d], k) => (
               <span key={n} className="flex items-start gap-4 px-6 py-5">
-                <span className="numeral text-3xl leading-none">{n}</span>
+                <span className="numeral text-3xl leading-none" style={{ '--nc': ['#2563eb', '#f97316', '#10b981'][k] } as React.CSSProperties}>{n}</span>
                 <span>
                   <span className="block font-display text-base font-semibold text-slate-900">{t}</span>
                   <span className="mt-1 block text-xs leading-relaxed text-slate-500">{d}</span>
@@ -352,10 +365,10 @@ function Landing() {
           <Reveal><Eyebrow n="05">Why it is safe</Eyebrow></Reveal>
           <Reveal delay={80}><Heading>Built so strangers can trust each other.</Heading></Reveal>
           <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {FEATURES.map(([t, d, icon], i) => (
-              <Reveal key={t} delay={(i % 3) * 90}>
+            {FEATURES.map(([t, d, icon], i0) => (
+              <Reveal key={t} delay={(i0 % 3) * 90}>
                 <TiltCard className="h-full">
-                  <span className="mb-4 grid h-11 w-11 place-items-center rounded-xl border border-slate-900/10 bg-gradient-to-br from-indigo-500/25 to-cyan-400/15 text-cyan-200"><Icon d={icon} /></span>
+                  <span className={`mb-4 grid h-11 w-11 place-items-center rounded-xl ${HUES[i0]}`}><Icon d={icon} /></span>
                   <h3 className="font-display text-lg font-semibold text-slate-900">{t}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-slate-500">{d}</p>
                 </TiltCard>
@@ -373,9 +386,14 @@ function Landing() {
         {/* routes marquee */}
         <section aria-label="Routes you can travel today" className="relative overflow-hidden border-y border-slate-900/10 bg-slate-900/[0.02] py-7 backdrop-blur-sm">
           <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.3em] text-slate-400">Routes you can travel today</p>
-          <div className="marquee flex w-max gap-12 whitespace-nowrap font-display text-3xl font-normal text-slate-400">
+          <div className="marquee flex w-max gap-4 whitespace-nowrap">
             {[...CITIES, ...CITIES].map((c, i) => (
-              <span key={i} className="flex items-center gap-12">{c}<span className="text-cyan-300">→</span></span>
+              <span key={i} className="glass flex items-center gap-2.5 rounded-full px-5 py-2 font-display text-lg font-medium text-slate-800"><span className={`h-2 w-2 rounded-full ${DOTS[i % DOTS.length]}`} />{c}</span>
+            ))}
+          </div>
+          <div className="marquee-rev mt-3 flex w-max gap-4 whitespace-nowrap">
+            {[...CITIES].reverse().concat([...CITIES].reverse()).map((c, i) => (
+              <span key={i} className="flex items-center gap-2.5 rounded-full border border-slate-900/10 bg-white/50 px-5 py-2 font-display text-lg font-medium text-slate-600"><span className={`h-2 w-2 rounded-full ${DOTS[(i + 3) % DOTS.length]}`} />{c}</span>
             ))}
           </div>
         </section>

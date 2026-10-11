@@ -94,6 +94,32 @@ body {
   overflow-x: hidden;
 }
 
+/* A slow multicolour aurora behind everything: violet, peach, mint and sky drifting under the frosted glass. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -25%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.8;
+  background:
+    radial-gradient(38% 34% at 18% 24%, rgb(167 139 250 / 0.36), transparent 70%),
+    radial-gradient(34% 30% at 82% 18%, rgb(253 186 116 / 0.42), transparent 70%),
+    radial-gradient(40% 34% at 72% 82%, rgb(110 231 183 / 0.34), transparent 70%),
+    radial-gradient(36% 30% at 24% 84%, rgb(125 211 252 / 0.42), transparent 70%);
+  animation: aurora 26s ease-in-out infinite alternate;
+}
+
+@keyframes aurora {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  50% { transform: translate3d(5%, -4%, 0) rotate(7deg) scale(1.1); }
+  100% { transform: translate3d(-5%, 4%, 0) rotate(-6deg) scale(1.03); }
+}
+
+@media (pointer: coarse) {
+  body::after { animation: none; }
+}
+
 /* soft spotlight that follows the pointer */
 body::before {
   content: "";
@@ -204,11 +230,27 @@ input[type="file"]::file-selector-button:hover {
 
 /* Blue-to-sky type for the accent phrase of a headline. */
 .text-gradient {
-  background: linear-gradient(100deg, #1d4ed8 0%, #2563eb 40%, #0ea5e9 100%);
+  background: linear-gradient(100deg, #1d4ed8 0%, #2563eb 28%, #0ea5e9 52%, #7c3aed 76%, #1d4ed8 100%);
+  background-size: 220% 100%;
+  animation: gradient-pan 8s ease-in-out infinite alternate;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   text-shadow: none;
+}
+
+@keyframes gradient-pan {
+  to { background-position: 100% 0; }
+}
+
+/* A soft ring that pulses out from the main call to action. */
+.btn-ring {
+  animation: ring 2.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes ring {
+  0% { box-shadow: 0 10px 40px -8px rgb(37 99 235 / 0.7), 0 0 0 0 rgb(37 99 235 / 0.45); }
+  70%, 100% { box-shadow: 0 10px 40px -8px rgb(37 99 235 / 0.7), 0 0 0 20px rgb(37 99 235 / 0); }
 }
 
 /* A one-pixel blue hairline that fades around the edge of a card. */
@@ -281,7 +323,7 @@ input[type="file"]::file-selector-button:hover {
 .numeral {
   font-family: var(--font-display);
   color: transparent;
-  -webkit-text-stroke: 1px rgb(37 99 235 / 0.85);
+  -webkit-text-stroke: 1px var(--nc, rgb(37 99 235 / 0.85));
   font-feature-settings: "lnum";
 }
 
@@ -293,7 +335,17 @@ input[type="file"]::file-selector-button:hover {
   animation: marquee 46s linear infinite;
 }
 
-.marquee:hover {
+.marquee-rev {
+  animation: marquee-rev 52s linear infinite;
+}
+
+@keyframes marquee-rev {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+.marquee:hover,
+.marquee-rev:hover {
   animation-play-state: paused;
 }
 

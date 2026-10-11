@@ -117,8 +117,8 @@ function NetworkStage({ groupRef }: { groupRef: RefObject<THREE.Group | null> })
       {lines.map((l, i) => <primitive key={i} object={l} />)}
       {arcs.map((_, i) => (
         <mesh key={i} ref={(el) => { pulses.current[i] = el }}>
-          <sphereGeometry args={[0.055, 10, 10]} />
-          <meshBasicMaterial color={GLOW_CYAN} toneMapped={false} transparent />
+          <sphereGeometry args={[0.07, 10, 10]} />
+          <meshBasicMaterial color="#fb7185" toneMapped={false} transparent />
         </mesh>
       ))}
       {NODES.map((n, i) => (
@@ -310,7 +310,7 @@ function ArrivalStage({ groupRef, tRef, count }: { groupRef: RefObject<THREE.Gro
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         </bufferGeometry>
-        <pointsMaterial color={GLOW_CYAN} size={0.07} sizeAttenuation transparent opacity={0} depthWrite={false} toneMapped={false} />
+        <pointsMaterial color="#f59e0b" size={0.09} sizeAttenuation transparent opacity={0} depthWrite={false} toneMapped={false} />
       </points>
       <pointLight color="#9ccbff" intensity={18} distance={12} />
     </group>
